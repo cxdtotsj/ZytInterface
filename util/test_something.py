@@ -7,17 +7,27 @@ import os
 # print(a)
 # print(type(a))
 
-b = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-print(b)
+# b = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+# print(b)
+#
+# # 获取当前时间戳
+# a = int(time.time()+1000)
+# print(a)
+#
+# # 时间戳转换成时间
+# c = time.localtime(a)
+# d = time.strftime("%Y-%m-%d %H:%M:%S",c)
+# print(d)
 
-# 获取当前时间戳
-a = int(time.time()+1000)
-print(a)
+# 转换时间戳函数1534474495
+def human_time(stamptime):
+    c = time.localtime(stamptime)
+    d = time.strftime("%Y-%m-%d %H:%M:%S", c)
+    print(d)
 
-# 时间戳转换成时间
-c = time.localtime(a)
-d = time.strftime("%Y-%m-%d %H:%M:%S",c)
-print(d)
+human_time(1534474495)
+
+
 
 # timeStamp = 1535791757
 # timearrary = time.localtime(timeStamp)
@@ -39,3 +49,20 @@ print(d)
 #         time_test = datetime.datetime.now()
 #         return time_test
 
+'''模拟装饰器'''
+
+
+def contin(func):
+    def count_print():
+        for i in range(1, 10):
+            func()
+    return count_print
+
+
+
+@contin
+def print_num():
+    print(1)
+
+
+print_num()

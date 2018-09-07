@@ -1,7 +1,6 @@
 '''
-2018-9-1
+2018-9-5
 活动类接口
-活动表：zyt_event ; id = 48
 '''
 
 from base.baseMethod import BaseMethod
@@ -23,9 +22,6 @@ class TestActivityAView(unittest.TestCase):
         cls.opera_json = OperetionJson()
         cls.opera_assert = AssertJudgment()
         cls.sql_data = SQLData()
-        cls.pub_param = PublicParam()
-        cls.token = cls.pub_param.token
-        cls.user_id = cls.pub_param.user_id
         # 需要报名的活动id（后期可通过数据库新增一个活动，并返回至json）
         cls.event_id = cls.sql_data.insert_event_yes()
         cls.opera_json.check_json_value("event_id",cls.event_id)
@@ -39,7 +35,7 @@ class TestActivityAView(unittest.TestCase):
     def tearDownClass(cls):
         cls.opera_db.close_db()
 
-    def test01_activityDetail(self):
+    def test01_01_activityDetail(self):
         '''case01-01 : 活动详情接口 '''
 
         api = '/api/v1/activity/{}'.format(self.event_id)
@@ -63,7 +59,7 @@ class TestActivityAView(unittest.TestCase):
             "接口返回的活动内容不正确")
 
 
-    def test02_default_activity_banner(self):
+    def test02_01_default_activity_banner(self):
         '''case02-01 : 活动中心-已启用&置顶的活动列表接口；
             不传参，接口默认展示数量为3'''
 
@@ -80,7 +76,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), 3, activity_banner)
 
-    def test03_specified_activity_banner(self):
+    def test02_02_specified_activity_banner(self):
         '''case02-02 : 活动中心-已启用&置顶的活动列表接口；
             传入指定的参数'''
 
@@ -98,7 +94,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), data["l"], activity_banner)
 
-    def test04_default_activity_recom(self):
+    def test03_01_default_activity_recom(self):
         '''case03-01 : 活动单页-已启用&非置顶的推荐活动列表;
             不传参，接口默认展示数量为10 '''
 
@@ -115,7 +111,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), 10, activity_recom)
 
-    def test05_specified_activity_recom(self):
+    def test03_02_specified_activity_recom(self):
         '''case03-02 : 活动单页-已启用&非置顶的推荐活动列表;
             传入指定的参数 '''
 
@@ -133,7 +129,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), data["l"], activity_recom)
 
-    def test06_default_activity_list(self):
+    def test04_01_default_activity_list(self):
         '''case04-01 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；
             不传参，接口默认传 第一页，数量为20 '''
 
@@ -151,7 +147,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']["data"]), 20, activity_list)
 
-    def test07_specified_activity_list(self):
+    def test04_02_specified_activity_list(self):
         """case04-02 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；
             传入指定的参数 """
 
@@ -171,7 +167,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']["data"]), data["l"], activity_list)
 
-    def test08_activity_new(self):
+    def test05_01_activity_new(self):
         """case05-01 : 活动中心-已启用的最新活动"""
 
         api = "/api/v1/activitys/new"

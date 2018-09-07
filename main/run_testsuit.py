@@ -12,13 +12,15 @@ import HTMLTestRunner
 import unittest
 from util.send_email import SendEmail
 from zyt_test.test_course import TestCourse
-from zyt_test.test_activity import TestActivity
+from zyt_test.test_activity import TestActivitySignUp,TestActivityView
 
 
 '''添加用例集'''
 testCourse = unittest.TestLoader().loadTestsFromTestCase(TestCourse)
-testActivity = unittest.TestLoader().loadTestsFromTestCase(TestActivity)
-suite = unittest.TestSuite([testCourse, testActivity])
+testActivityView = unittest.TestLoader().loadTestsFromTestCase(TestActivityView)
+testActivitySignUp = unittest.TestLoader().loadTestsFromTestCase(TestActivitySignUp)
+
+suite = unittest.TestSuite([testCourse ,testActivityView,testActivitySignUp])
 
 # 生成HTML的报告
 curPath = os.path.abspath(os.path.dirname(__file__))

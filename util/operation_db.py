@@ -1,6 +1,7 @@
 
 import pymysql
 import base.setting
+import time
 
 
 class OperationDB:
@@ -94,8 +95,12 @@ class OperationDB:
 
 
 if __name__ == '__main__':
+    from data.sql_data import SQLData
+    get_data = SQLData()
     dbdata = OperationDB()
-    paramers = (1, 0, 1)
-    sql = '''update zyt_user_like set type =1 where id = 50;'''
-    a = dbdata.update_data(sql)
-    print(a)
+    now_time = int(time.time())
+    sql = '''SELECT id FROM `zyt_classes` where classes_status = 1 ORDER BY created_time DESC;'''
+    new_course = dbdata.get_fetchmany(sql, 1000)
+    # value_dict = get_data.array_get_dictValue(new_course,"id")
+    # print(value_dict)
+    print(new_course)

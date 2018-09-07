@@ -7,7 +7,9 @@
 
 from base.baseMethod import BaseMethod
 from util.operation_db import OperationDB
+from data.sql_data import SQLData
 from base.public_param import PublicParam
+from util.assert_judgment import AssertJudgment
 import unittest
 import datetime
 
@@ -18,6 +20,8 @@ class TestCourse(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
+        cls.sql_data = SQLData()
+        cls.opera_assert = AssertJudgment()
         cls.pub_param = PublicParam()
         cls.token = cls.pub_param.token
         cls.user_id = cls.pub_param.user_id
@@ -26,21 +30,43 @@ class TestCourse(unittest.TestCase):
     def tearDownClass(cls):
         cls.opera_db.close_db()
 
-    def test01_Recom(self):
-        '''首页-热门推荐课程列表'''
+    def test01_01_default_course_recom(self):
+        """case01-01 : 首页-热门推荐课程列表;
+            不传参，接口默认展示数量为8 """
 
         api = '/api/v1/course/recom'
         res = self.run_method.get(api)
         res_dict = res.json()
+        sql = '''SELECT id FROM `zyt_classes` where classes_status = 1;'''
+        course_recom = self.opera_db.get_effect_row(sql)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(len(res_dict["data"]), 8, "返回的热门课程不足8个")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict['data']), 8, course_recom)
 
-    def test02_Prof(self):
-        '''培训页-课程专业筛选项'''
+    def test01_02_specified_course_recom(self):
+        """case01-02 : 首页-热门推荐课程列表;
+            传入指定的参数 """
+
+        api = '/api/v1/course/recom'
+        data = {"l": 15}
+        res = self.run_method.get(api, data)
+        res_dict = res.json()
+        sql = '''SELECT id FROM `zyt_classes` where classes_status = 1;'''
+        course_recom = self.opera_db.get_effect_row(sql)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.opera_assert.is_equal_value_len(
+            len(res_dict['data']), data["l"], course_recom)
+
+    def test02_01_course_prof(self):
+        """case02-01 : 培训页-课程专业筛选项"""
 
         api = "/api/v1/course/prof"
         res = self.run_method.get(api)
@@ -54,11 +80,54 @@ class TestCourse(unittest.TestCase):
             "success", res_dict)
         self.assertEqual(len(res_dict["data"]), prof_row, "课程专业筛选项返回数量不正确")
 
-    def test03_List(self):
-        '''培训页-课程可筛选列表(带翻页)'''
+    def test03_01_default_course_list(self):
+        """case03-01 : 培训页-课程可筛选列表(带翻页)
+            不传参，默认页面为 1，数量为 12 """
 
         api = "/api/v1/course/list"
-        data = {"l": 5, "p": 2}
+        res = self.run_method.get(api)
+        res_dict = res.json()
+        sql = '''SELECT id FROM zyt_classes where classes_status = 1 ORDER BY created_time DESC;'''
+        new_course = self.opera_db.get_fetchmany(sql, 12)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.assertEqual(res_dict["data"]["current_page"], 1, "返回的页数不正确")
+        # 校验返回的课程id和数据库的是否一致（默认按最新排序）
+        self.assertEqual(
+            self.sql_data.array_get_dictValue(
+                res_dict["data"]["data"], "id"), self.sql_data.array_get_dictValue(
+                new_course, "id"), "返回的id不一致")
+
+    def test03_02_specified_course_list(self):
+        """case03-02 : 培训页-课程可筛选列表(带翻页)
+            传入指定的页数和单页数量 """
+
+        api = "/api/v1/course/list"
+        data = {"l": 5,
+                "p": 2}
+        res = self.run_method.get(api, data)
+        res_dict = res.json()
+        sql = '''SELECT id FROM zyt_classes where classes_status = 1 ORDER BY created_time DESC;'''
+        new_course = self.opera_db.get_effect_row(sql)-data["l"]*(data["p"]-1)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.assertEqual(
+            res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), data["l"], new_course)
+
+    def test03_03_search_course_list(self):
+        """case03-03 : 培训页-课程可筛选列表(带翻页)
+            传入 搜索 参数（关键字设置为新增的课程名称） """
+
+        api = "/api/v1/course/list"
+        data = {"k": "这是"}
         res = self.run_method.get(api, data)
         res_dict = res.json()
 
@@ -66,11 +135,63 @@ class TestCourse(unittest.TestCase):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], 2, "返回的页数不正确")
-        try:
-            self.assertEqual(len(res_dict["data"]["data"]), 5)
-        except BaseException:
-            print("第二页的课程数量不足5个")
+        self.assertTrue(len(res_dict["data"]["data"]) >= 1,"搜索的课程数不正确")
+
+    def test03_04_course_online_list(self):
+        """case03-04 : 培训页-课程可筛选列表(带翻页)
+            传入 线上课程 类型参数 """
+
+        api = "/api/v1/course/list"
+        data = {"c": 1}
+        res = self.run_method.get(api, data)
+        res_dict = res.json()
+        sql = '''select id from zyt_classes where classes_status = 1 and classes_type = 1 ORDER BY created_time DESC;'''
+        online_course = self.opera_db.get_effect_row(sql)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, online_course)
+
+    def test03_05_course_offline_list(self):
+        """case03-05 : 培训页-课程可筛选列表(带翻页)
+            传入 线下课程 类型参数 """
+
+        api = "/api/v1/course/list"
+        data = {"c": 2}
+        res = self.run_method.get(api, data)
+        res_dict = res.json()
+        sql = '''select id from zyt_classes where classes_status = 1 and classes_type = 2 ORDER BY created_time DESC;'''
+        offline_course = self.opera_db.get_effect_row(sql)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, offline_course)
+
+    def test03_06_course_prof_list(self):
+        """case03-06 : 培训页-课程可筛选列表(带翻页)
+            传入 多个课程专业 类型参数 """
+
+        api = "/api/v1/course/list"
+        data = {"f": "1|2"}
+        res = self.run_method.get(api, data)
+        res_dict = res.json()
+        sql = '''select id from zyt_classes where classes_status = 1 and classes_cate_id in (1,2);'''
+        prof_course = self.opera_db.get_effect_row(sql)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "success", res_dict)
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, prof_course)
+
+
 
     def test04_CommentList32(self):
         '''课程id为32的课程评论(带翻页)'''
