@@ -72,14 +72,18 @@ class OperationDB:
             self.db.commit()
         except BaseException:
             self.db.rollback()
+            print("更新数据失败")
 
-    # 插入数据
+    # 插入数据，并返回自增id
     def insert_data(self, sql):
         try:
             self.mycursor.execute(sql)
             self.db.commit()
+            last_id = self.mycursor.lastrowid
+            return last_id
         except BaseException:
             self.db.rollback()
+            print("插入数据失败")
 
     # 删除数据
     def delete_data(self, sql):
@@ -95,12 +99,13 @@ class OperationDB:
 
 
 if __name__ == '__main__':
-    from data.sql_data import SQLData
+    from data.get_data import SQLData
+    import random
     get_data = SQLData()
     dbdata = OperationDB()
-    now_time = int(time.time())
-    sql = '''SELECT id FROM `zyt_classes` where classes_status = 1 ORDER BY created_time DESC;'''
-    new_course = dbdata.get_fetchmany(sql, 1000)
-    # value_dict = get_data.array_get_dictValue(new_course,"id")
-    # print(value_dict)
-    print(new_course)
+    class_id = get_data.insert_course(1)
+    print(class_id)
+    hour_id = get_data.insert_course_hour(63)
+    print(hour_id)
+    class_off_id = get_data.insert_course(2)
+    print(class_off_id)

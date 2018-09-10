@@ -8,7 +8,7 @@ from util.operation_db import OperationDB
 from util.operation_json import OperetionJson
 from base.public_param import PublicParam
 from util.assert_judgment import AssertJudgment
-from data.sql_data import SQLData
+from data.get_data import SQLData
 import time
 import unittest
 
@@ -21,19 +21,15 @@ class TestActivityAView(unittest.TestCase):
         cls.opera_db = OperationDB()
         cls.opera_json = OperetionJson()
         cls.opera_assert = AssertJudgment()
-        cls.sql_data = SQLData()
+        cls.get_data = SQLData()
         # 需要报名的活动id（后期可通过数据库新增一个活动，并返回至json）
-        cls.event_id = cls.sql_data.insert_event_yes()
+        cls.event_id = cls.get_data.insert_event_yes()
         cls.opera_json.check_json_value("event_id",cls.event_id)
         time.sleep(3)
         # 不需要报名的活动id
-        cls.no_event_id = cls.sql_data.insert_event_no()
+        cls.no_event_id = cls.get_data.insert_event_no()
         cls.opera_json.check_json_value("no_event_id",cls.no_event_id)
         cls.api = "/api/v1/activity/signup"
-
-    @classmethod
-    def tearDownClass(cls):
-        cls.opera_db.close_db()
 
     def test01_01_activityDetail(self):
         '''case01-01 : 活动详情接口 '''

@@ -25,7 +25,7 @@ class PublicParam:
         else:
             print("服务器登陆失败")
 
-    def testtoken(self):
+    def test_token(self):
         api = "/api/v1/course/detail/1"
         data = {"token": self.token, "user_id": self.user_id}
         res = self.run_method.get(api, data).json()

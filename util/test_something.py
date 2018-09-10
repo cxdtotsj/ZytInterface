@@ -28,6 +28,8 @@ def human_time(stamptime):
 human_time(1534474495)
 
 
+print(a)
+
 
 # timeStamp = 1535791757
 # timearrary = time.localtime(timeStamp)
@@ -49,20 +51,20 @@ human_time(1534474495)
 #         time_test = datetime.datetime.now()
 #         return time_test
 
-'''模拟装饰器'''
-
-
-def contin(func):
-    def count_print():
-        for i in range(1, 10):
-            func()
-    return count_print
-
-
-
-@contin
-def print_num():
-    print(1)
-
-
-print_num()
+# '''模拟装饰器'''
+#
+#
+# def contin(func):
+#     def count_print():
+#         for i in range(1, 10):
+#             func()
+#     return count_print
+#
+#
+#
+# @contin
+# def print_num():
+#     print(1)
+#
+#
+# print_num()
