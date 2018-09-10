@@ -200,20 +200,17 @@ class TestSearchCourse(unittest.TestCase):
         res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_classes where classes_status = 1 ORDER BY buy_num DESC;'''
-        sales_course = self.opera_db.get_fetchmany(sql, 12)
+        sales_course = self.opera_db.get_effect_row(sql)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        # 校验返回的课程id和数据库的是否一致（按销量、DESC排序）
-        self.assertEqual(
-            self.get_data.array_get_dictValue(
-                res_dict["data"]["data"], "id"), self.get_data.array_get_dictValue(
-                sales_course, "id"), "返回的id不一致")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, sales_course)
 
     def test03_08_course_salesSort_list(self):
-        """case03-07 : 培训页-课程可筛选列表(带翻页);
+        """case03-08 : 培训页-课程可筛选列表(带翻页);
             课程排序按 销量，排序规则为 asc  """
         api = "/api/v1/course/list"
         data = {"o": "sales",
@@ -221,40 +218,34 @@ class TestSearchCourse(unittest.TestCase):
         res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_classes where classes_status = 1 ORDER BY buy_num ASC;'''
-        sales_course = self.opera_db.get_fetchmany(sql, 12)
+        sales_course = self.opera_db.get_effect_row(sql)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        # 校验返回的课程id和数据库的是否一致（按销量、ASC排序）
-        self.assertEqual(
-            self.get_data.array_get_dictValue(
-                res_dict["data"]["data"], "id"), self.get_data.array_get_dictValue(
-                sales_course, "id"), "返回的id不一致")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, sales_course)
 
     def test03_09_course_priceSort_list(self):
-        """case03-07 : 培训页-课程可筛选列表(带翻页);
+        """case03-09 : 培训页-课程可筛选列表(带翻页);
             课程排序按 价格，排序规则默认为 desc  """
         api = "/api/v1/course/list"
         data = {"o": "price"}
         res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_classes where classes_status = 1 ORDER BY classes_price DESC;'''
-        price_course = self.opera_db.get_fetchmany(sql, 12)
+        price_course = self.opera_db.get_effect_row(sql)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        # 校验返回的课程id和数据库的是否一致（按价格、DESC排序）
-        self.assertEqual(
-            self.get_data.array_get_dictValue(
-                res_dict["data"]["data"], "id"), self.get_data.array_get_dictValue(
-                price_course, "id"), "返回的id不一致")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, price_course)
 
     def test03_10_course_priceSort_list(self):
-        """case03-07 : 培训页-课程可筛选列表(带翻页);
+        """case03-10 : 培训页-课程可筛选列表(带翻页);
             课程排序按 价格，排序规则默认为 desc  """
         api = "/api/v1/course/list"
         data = {"o": "price",
@@ -262,17 +253,14 @@ class TestSearchCourse(unittest.TestCase):
         res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_classes where classes_status = 1 ORDER BY classes_price ASC;'''
-        price_course = self.opera_db.get_fetchmany(sql, 12)
+        price_course = self.opera_db.get_effect_row(sql)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        # 校验返回的课程id和数据库的是否一致（按价格、ASC排序）
-        self.assertEqual(
-            self.get_data.array_get_dictValue(
-                res_dict["data"]["data"], "id"), self.get_data.array_get_dictValue(
-                price_course, "id"), "返回的id不一致")
+        self.opera_assert.is_equal_value_len(
+            len(res_dict["data"]["data"]), 12, price_course)
 
 
 class TestCourse(unittest.TestCase):
@@ -295,15 +283,6 @@ class TestCourse(unittest.TestCase):
         # 线下课程id，classes_type 为2
         time.sleep(2)
         cls.offline_class = cls.get_data.insert_course(2)
-
-        # # 线上课程id，classes_type 为1
-        # cls.online_class = 59
-        # # 线上课时id，关联线上课程id
-        # cls.online_hour = 278
-        # # 线下课程id，classes_type 为2
-        # time.sleep(2)
-        # cls.offline_class = 60
-
 
     def test01_01_course_detail(self):
         """case01-01 : 查询课程详细内容;

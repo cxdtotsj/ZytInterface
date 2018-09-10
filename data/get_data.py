@@ -97,12 +97,12 @@ class SQLData:
 
 
 if __name__ == "__main__":
-    sql = SQLData()
+    get_data = SQLData()
     from util.operation_db import OperationDB
     opera_db = OperationDB()
     sql1 = '''SELECT id FROM zyt_classes where classes_status = 1 ORDER BY created_time DESC;'''
-    new_course = opera_db.get_fetchmany(sql, 12)
+    new_course = opera_db.get_fetchmany(sql1, 12)
     print(new_course)
-    a = sql.array_get_dictValue(new_course,"id")
+    a = get_data.array_get_dictValue(new_course,"id")
     print(a)
 
