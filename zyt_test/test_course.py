@@ -270,7 +270,7 @@ class TestCourse(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson()
+        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         cls.get_data = SQLData()
         cls.opera_assert = AssertJudgment()
         cls.pub_param = PublicParam()
@@ -422,6 +422,7 @@ class TestCourse(unittest.TestCase):
             课程订单状态为 -1（失败） """
         api = "/api/v1/course/qrcode"
         returnurl = "#/train/{}".format(self.offline_class)
+        # 购买课程
         order_id = self.get_data.zyt_pay_order(
             self.user_id, self.token, self.offline_class, 1, 0, returnurl)
         sql = '''update zyt_order set status = -1 where order_id = '{}';'''.format(

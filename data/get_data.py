@@ -1,6 +1,7 @@
 from util.operation_db import OperationDB
 from util.operation_json import OperetionJson
 from base.baseMethod import BaseMethod
+from base.public_param import PublicParam
 from base.getURL import API
 import random
 import time
@@ -10,8 +11,9 @@ class SQLData:
 
     def __init__(self):
         self.opera_db = OperationDB()
-        self.opera_json = OperetionJson()
+        self.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         self.run_method = BaseMethod()
+        self.pub_param = PublicParam()
         self.get_url = API()
 
     # 自动插入一条 无需报名的活动，并返回出 id
@@ -95,14 +97,31 @@ class SQLData:
         hour_id = self.opera_db.insert_data(sql)
         return hour_id
 
+    # 新增一个问题，并购买
+    def get_ask(self,is_buy=None):
+        api = "/api/v1/qa/qsubmit"
+        random_mun = random.randint(1,100)
+        user_id = self.pub_param.user_id
+        token = self.pub_param.token
+        e_id = self.pub_param.get_expert_info()[1]
+        e_token = self.pub_param.get_expert_info()[0]
+        qa_headers = {"content-type": "application/json"}
+        data = {"user_id": e_id,
+                "token": e_token,
+                "eid": user_id,
+                "title": "固定问题题目 -- %s" % random_mun,
+                "description": "固定问题描述 -- %s" % random_mun,
+                "img": ["/1536116758846885506?imageView2/2/w/212/h/136/q/100"]}
+        qid = self.run_method.post(api, data, headers=qa_headers).json()["data"]["last_id"]
+        # 返回问题的id至json文件
+        self.opera_json.check_json_value("get_ask", qid)
+        # 购买问题
+        if is_buy is not None:
+            self.zyt_pay_order(
+                e_id, e_token, qid, 2, 0, "#/expert/payment")
+        return qid
+
 
 if __name__ == "__main__":
     get_data = SQLData()
-    from util.operation_db import OperationDB
-    opera_db = OperationDB()
-    sql1 = '''SELECT id FROM zyt_classes where classes_status = 1 ORDER BY created_time DESC;'''
-    new_course = opera_db.get_fetchmany(sql1, 12)
-    print(new_course)
-    a = get_data.array_get_dictValue(new_course,"id")
-    print(a)
-
+    get_data.get_ask(1)

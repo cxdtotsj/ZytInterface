@@ -1,3 +1,7 @@
+'''
+1.获取测试用户、专家的 user_id 、 token
+'''
+
 from base.baseMethod import BaseMethod
 from util.operation_db import OperationDB
 
@@ -10,6 +14,7 @@ class PublicParam:
         self.token = self.get_token()[0]
         self.user_id = self.get_token()[1]
 
+    # 获取测试用户的 user_id，token
     def get_token(self):
         api = "/api/v1/user/login"
         data = {"mobile": 18321829313, "password": "Password02!"}
@@ -25,19 +30,26 @@ class PublicParam:
         else:
             print("服务器登陆失败")
 
-    def test_token(self):
-        api = "/api/v1/course/detail/1"
-        data = {"token": self.token, "user_id": self.user_id}
-        res = self.run_method.get(api, data).json()
-        return res
+    # 获取专家的user_id，token
+    def get_expert_info(self):
+        api = "/api/v1/user/login"
+        data = {"mobile": 18317026527, "password": "Password01!"}
+        res = self.run_method.post(api, data)
+        if res.status_code == 200:
+            res_dict = res.json()
+            try:
+                self.e_token = res_dict["data"]["token"]
+                self.e_id = res_dict["data"]["user_id"]
+                return self.e_token, self.e_id
+            except BaseException:
+                print("用户名或验证码错误")
+        else:
+            print("服务器登陆失败")
+
 
 
 if __name__ == "__main__":
     import time
     basedata = PublicParam()
-    token = basedata.get_token()[0]
-    print(token)
-    print("\n")
-    time.sleep(3)
-    data1 = basedata.testtoken()
-    print(data1["data"]["token"])
+    eid = basedata.get_expert_info()[1]
+    print(eid)

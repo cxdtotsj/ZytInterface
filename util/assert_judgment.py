@@ -48,9 +48,9 @@ class AssertJudgment:
         :param sql_value: 数据库中已存在的数量
         '''
         if sql_num >= except_num:
-            assert receive_num == except_num,"实际值和预期值应该相等"
+            assert receive_num == except_num, "实际值和预期值应该相等"
         elif 1 <= sql_num < except_num:
-            assert receive_num == sql_num,"实际值应等于数据库查到的值"
+            assert receive_num == sql_num, "实际值应等于数据库查到的值"
         else:
             assert receive_num == 0, "实际值应该为0"
 

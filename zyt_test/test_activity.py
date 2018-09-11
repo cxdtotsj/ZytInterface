@@ -1,5 +1,5 @@
 '''
-2018-9-5
+2018-9-7
 活动类接口
 '''
 
@@ -19,7 +19,7 @@ class TestActivityAView(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson()
+        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         cls.opera_assert = AssertJudgment()
         cls.get_data = SQLData()
         # 需要报名的活动id（后期可通过数据库新增一个活动，并返回至json）
@@ -189,7 +189,7 @@ class TestActivityBSignUp(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson()
+        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         cls.pub_param = PublicParam()
         cls.token = cls.pub_param.token
         cls.user_id = cls.pub_param.user_id

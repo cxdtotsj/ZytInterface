@@ -1,4 +1,1 @@
-{"test06_QaQSubmit": 303,
-    "test08_ExpertLogin": {"user_id": "f350756baf4211e8b6e30017fa004b58",
-                           "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMzUwNzU2YmFmNDIxMWU4YjZlMzAwMTdmYTAwNGI1OCIsImlhdCI6MTUzNjE0MjM5MSwidmVyIjoiMS4wIiwic2VzIjoiN2Z6Z2Q3eGkifQ.Z_idEIexBI4Ly-U2-PmH5MGlTfcbiEK3NVtFyGKbFpekwMqXcVsK-9t0O9lVrLH8mv5JpTQRMN3vSY900130QiJIntm9Sec2jVMC1T4JVoE3sEUXontyKkz1mzRY3d7EVr0-FcPv71S4eHMpe9ER26K0BO1aPiGyqjhL21LBW7Q"},
- "test09_QaASubmit_Fail": 1}
+{"test06_QaQSubmit": 303, "test08_ExpertLogin": {"user_id": "f350756baf4211e8b6e30017fa004b58", "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMzUwNzU2YmFmNDIxMWU4YjZlMzAwMTdmYTAwNGI1OCIsImlhdCI6MTUzNjE0MjM5MSwidmVyIjoiMS4wIiwic2VzIjoiN2Z6Z2Q3eGkifQ.Z_idEIexBI4Ly-U2-PmH5MGlTfcbiEK3NVtFyGKbFpekwMqXcVsK-9t0O9lVrLH8mv5JpTQRMN3vSY900130QiJIntm9Sec2jVMC1T4JVoE3sEUXontyKkz1mzRY3d7EVr0-FcPv71S4eHMpe9ER26K0BO1aPiGyqjhL21LBW7Q"}, "test09_QaASubmit_Fail": 1, "test_01_08_qa_submit_success": 322, "event_id": 78, "no_event_id": 79, "test01_03_offlineCourse_qrCode_status": "20180911153820030973", "get_ask": 327}
