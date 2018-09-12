@@ -2,6 +2,7 @@
 2018-9-3
 用户类接口
 用户账号 ： 18321829313
+专家账号： 18317026527
 '''
 
 from base.baseMethod import BaseMethod
@@ -15,7 +16,7 @@ import time
 import unittest
 
 
-class TestUser(unittest.TestCase,User):
+class TestUser(unittest.TestCase, User):
 
     @classmethod
     def setUpClass(cls):
@@ -35,36 +36,39 @@ class TestUser(unittest.TestCase,User):
             用户不存在  """
         api = "/api/v1/user/login"
         data = {"mobile": 111111111,
-                "password":"Password02!"}
+                "password": "Password02!"}
         res = self.run_method.post(api, data)
         res_dict = res.json()
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(res_dict["code"],0,"登陆校验失败")
+        self.assertEqual(res_dict["code"], 0, "登陆校验失败")
 
     def test04_02_user_login_errorPwd(self):
         """case04-02 : 用户-登录;
             用户密码错误  """
         api = "/api/v1/user/login"
         data = {"mobile": User.user_phone,
-                "password":"Password01!"}
+                "password": "Password01!"}
         res = self.run_method.post(api, data)
         res_dict = res.json()
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(res_dict["code"],0,"登陆校验失败")
+        self.assertEqual(res_dict["code"], 0, "登陆校验失败")
 
     def test04_03_user_login_success(self):
         """case04-03 : 用户-登录;
             用户账号、密码正确  """
         api = "/api/v1/user/login"
         data = {"mobile": User.user_phone,
-                "password":"Password02!"}
+                "password": "Password02!"}
         res = self.run_method.post(api, data)
         res_dict = res.json()
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(res_dict["data"]["user_id"],self.user_id,"用户user_id返回不正确")
+        self.assertEqual(
+            res_dict["data"]["user_id"],
+            self.user_id,
+            "用户user_id返回不正确")
 
     def test05_01_user_likes_noAskId(self):
         """case05-01 : 点赞 ;
@@ -109,7 +113,8 @@ class TestUser(unittest.TestCase,User):
         """case05-03 : 点赞 ;
            点赞已购买问题 """
         api = "/api/v1/user/likes"
-        qid = self.get_data.get_ask(self.user_id,self.token,self.eid)
+        # 购买问题
+        qid = self.get_data.get_ask(self.user_id, self.token, self.eid)
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "relation_id": qid,
@@ -190,7 +195,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token}
 
-        res = self.run_method.post(api,data)
+        res = self.run_method.post(api, data)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -208,7 +213,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "feed_content": User.feed_content}
-        res = self.run_method.post(api,data)
+        res = self.run_method.post(api, data)
 
         sql = '''select content from zyt_user_feedback where user_id = '{}' ORDER BY created_at desc;'''.format(
             self.user_id)
@@ -227,7 +232,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token}
         # 确认不是专家
-        sql = '''update zyt_user set professor_status = 0,professor_certificate_verify = 0 
+        sql = '''update zyt_user set professor_status = 0,professor_certificate_verify = 0
                           where user_id = '{}';'''.format(self.user_id)
         self.opera_db.update_data(sql)
         res = self.run_method.post(api, data)
@@ -246,10 +251,10 @@ class TestUser(unittest.TestCase,User):
            编辑类型不存在 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default11",
-                "savedata": {
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default11",
+            "savedata": {
                 "nickname": User.nick_name}}
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -267,10 +272,10 @@ class TestUser(unittest.TestCase,User):
            昵称为空 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
                 "nickname": None}}
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -288,33 +293,37 @@ class TestUser(unittest.TestCase,User):
            手机号无法修改 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
                 "nickname": User.nick_name,
                 "mobile": 11111111111}}
         res = self.run_method.post(api, data, headers=User.headers)
-        sql = '''select phone from zyt_user where user_id = '{}';'''.format(self.user_id)
+        sql = '''select phone from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         update_phone = self.opera_db.get_fetchone(sql)["phone"]
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res.json())
-        self.assertNotEqual(update_phone, data["savedata"]["mobile"], "手机号已被更新成功")
+        self.assertNotEqual(
+            update_phone,
+            data["savedata"]["mobile"],
+            "手机号已被更新成功")
 
     def test07_06_user_defaultEdit_success(self):
         """case07-06 : 个人资料编辑，不是专家 ;
            修改个人资料 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear chen"}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear chen"}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -327,12 +336,12 @@ class TestUser(unittest.TestCase,User):
            修改个人资料 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "email": "acb#bac.com"}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
+                "nickname": User.nick_name,
+                "email": "acb#bac.com"}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -349,12 +358,12 @@ class TestUser(unittest.TestCase,User):
            修改个人资料 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "email": "xdchen@123.com"}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
+                "nickname": User.nick_name,
+                "email": "xdchen@123.com"}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -367,12 +376,12 @@ class TestUser(unittest.TestCase,User):
            姓名为空 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "verify",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": None}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "verify",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": None}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -389,14 +398,14 @@ class TestUser(unittest.TestCase,User):
            专业为空 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "verify",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear chen",
-                    "skill_id": None,
-                    "cert": ["/abc"]}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "verify",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear chen",
+                "skill_id": None,
+                "cert": ["/abc"]}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -413,14 +422,14 @@ class TestUser(unittest.TestCase,User):
            证书为空 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "verify",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear chen",
-                    "skill_id": 1,
-                    "cert": []}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "verify",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear chen",
+                "skill_id": 1,
+                "cert": []}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -437,14 +446,14 @@ class TestUser(unittest.TestCase,User):
            提交证书 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "verify",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear chen",
-                    "skill_id": 1,
-                    "cert": ["/abc"]}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "verify",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear chen",
+                "skill_id": 1,
+                "cert": ["/abc"]}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -457,14 +466,14 @@ class TestUser(unittest.TestCase,User):
            再次提交证书 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "verify",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear chen",
-                    "skill_id": 1,
-                    "cert": ["/abcd"]}}
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "verify",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear chen",
+                "skill_id": 1,
+                "cert": ["/abcd"]}}
         res = self.run_method.post(api, data, headers=User.headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -481,13 +490,14 @@ class TestUser(unittest.TestCase,User):
            修改专家姓名 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "name": "bear1chen"}}
-        sql = '''select 'name' from zyt_user where user_id = '{}';'''.format(self.user_id)
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
+                "nickname": User.nick_name,
+                "name": "bear1chen"}}
+        sql = '''select 'name' from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         update_name = self.opera_db.get_fetchone(sql)["name"]
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -502,13 +512,14 @@ class TestUser(unittest.TestCase,User):
            修改专家技能 """
         api = "/api/v1/user/edit"
         data = {
-                "user_id": self.user_id,
-                "token": self.token,
-                "t": "default",
-                "savedata": {
-                    "nickname": User.nick_name,
-                    "skill_id": 2}}
-        sql = '''select skill from zyt_user where user_id = '{}';'''.format(self.user_id)
+            "user_id": self.user_id,
+            "token": self.token,
+            "t": "default",
+            "savedata": {
+                "nickname": User.nick_name,
+                "skill_id": 2}}
+        sql = '''select skill from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         update_skill = self.opera_db.get_fetchone(sql)["skill"]
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -516,7 +527,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res.json())
-        self.assertNotEqual(update_skill, data["savedata"]["skill_id"], "技能已被更新成功")
+        self.assertNotEqual(
+            update_skill,
+            data["savedata"]["skill_id"],
+            "技能已被更新成功")
 
     def test08_08_user_verifyExpert_nameAgain(self):
         """case08-08 : 申请专家认证，已是专家 ;
@@ -529,10 +543,11 @@ class TestUser(unittest.TestCase,User):
             "savedata": {
                 "nickname": User.nick_name,
                 "name": "bear1chen"}}
-        sql_expert = '''update zyt_user set professor_status = 1,professor_certificate_verify = 2 
+        sql_expert = '''update zyt_user set professor_status = 1,professor_certificate_verify = 2
                             where user_id = '{}';'''.format(self.user_id)
         self.opera_db.update_data(sql_expert)
-        sql_name = '''select 'name' from zyt_user where user_id = '{}';'''.format(self.user_id)
+        sql_name = '''select 'name' from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         update_name = self.opera_db.get_fetchone(sql_name)["name"]
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -553,7 +568,8 @@ class TestUser(unittest.TestCase,User):
             "savedata": {
                 "nickname": User.nick_name,
                 "skill_id": 2}}
-        sql = '''select skill from zyt_user where user_id = '{}';'''.format(self.user_id)
+        sql = '''select skill from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         update_skill = self.opera_db.get_fetchone(sql)["skill"]
         res = self.run_method.post(api, data, headers=User.headers)
 
@@ -561,7 +577,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res.json())
-        self.assertNotEqual(update_skill, data["savedata"]["skill_id"], "技能已被更新成功")
+        self.assertNotEqual(
+            update_skill,
+            data["savedata"]["skill_id"],
+            "技能已被更新成功")
 
     def test09_01_user_uploadEdit_avatar(self):
         """case09-01 : 申请专家认证，已是专家 ;
@@ -614,7 +633,8 @@ class TestUser(unittest.TestCase,User):
             "type": "open",
             "price": "abc"}
         res = self.run_method.post(api, data)
-        sql = '''select ask_price from zyt_user where user_id = '{}';'''.format(self.user_id)
+        sql = '''select ask_price from zyt_user where user_id = '{}';'''.format(
+            self.user_id)
         ask_price = self.opera_db.get_fetchone(sql)["ask_price"]
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -631,7 +651,7 @@ class TestUser(unittest.TestCase,User):
             "user_id": self.user_id,
             "token": self.token,
             "type": "open"}
-        sql = '''update zyt_user set professor_status = 0 and is_open_ask = 0 
+        sql = '''update zyt_user set professor_status = 0 and is_open_ask = 0
                   where user_id = '{}';'''.format(self.user_id)
         self.opera_db.update_data(sql)
         res = self.run_method.post(api, data)
@@ -654,7 +674,8 @@ class TestUser(unittest.TestCase,User):
             "token": self.token,
             "type": "open",
             "price": 0}
-        sql = '''update zyt_user set professor_status = 1 where user_id = '{}';'''.format(self.user_id)
+        sql = '''update zyt_user set professor_status = 1 where user_id = '{}';'''.format(
+            self.user_id)
         self.opera_db.update_data(sql)
         res = self.run_method.post(api, data)
 
@@ -665,7 +686,7 @@ class TestUser(unittest.TestCase,User):
 
     def test10_05_user_myOpenQA_close(self):
         """case10-05 : 开启专家咨询，设置价格 ;
-           再次关闭咨询"""
+           关闭咨询"""
         api = "/api/v1/user/myopenqa"
         data = {
             "user_id": self.user_id,
@@ -681,7 +702,7 @@ class TestUser(unittest.TestCase,User):
 
     def test10_06_user_myOpenQA_closeAgain(self):
         """case10-06 : 开启专家咨询，设置价格 ;
-           关闭咨询"""
+           再次关闭咨询"""
         api = "/api/v1/user/myopenqa"
         data = {
             "user_id": self.user_id,
@@ -705,10 +726,10 @@ class TestUser(unittest.TestCase,User):
             "follow_user_id": self.eid,
             "t": "add"}
         # 清楚已关注数据
-        sql_clear = '''delete from zyt_user_attention 
-                  where user_id = '{}' and attention_user_id = '{}';'''.format(self.user_id,self.eid)
+        sql_clear = '''delete from zyt_user_attention
+                  where user_id = '{}' and attention_user_id = '{}';'''.format(self.user_id, self.eid)
         self.opera_db.delete_data(sql_clear)
-        sql_expert = '''update zyt_user set professor_status = 0 
+        sql_expert = '''update zyt_user set professor_status = 0
                           where user_id = '{}';'''.format(self.eid)
         self.opera_db.update_data(sql_expert)
         res = self.run_method.post(api, data)
@@ -731,7 +752,7 @@ class TestUser(unittest.TestCase,User):
             "token": self.token,
             "follow_user_id": None,
             "t": "add"}
-        sql_expert = '''update zyt_user set professor_status = 1 
+        sql_expert = '''update zyt_user set professor_status = 1
                           where user_id = '{}';'''.format(self.eid)
         self.opera_db.update_data(sql_expert)
         res = self.run_method.post(api, data)
@@ -911,7 +932,8 @@ class TestUser(unittest.TestCase,User):
             "p_desc": User.p_desc,
             "p_img": User.p_img}
         '''清除项目'''
-        sql = '''DELETE from zyt_user_project where user_id = '{}';'''.format(self.user_id)
+        sql = '''DELETE from zyt_user_project where user_id = '{}';'''.format(
+            self.user_id)
         self.opera_db.delete_data(sql)
         res = self.run_method.post(api, data)
 
@@ -925,7 +947,7 @@ class TestUser(unittest.TestCase,User):
         """case12-05 : 新增作品 ;
            上传项目超过20个 """
         for i in range(20):
-            res = self.get_data.get_project(self.user_id,self.token)
+            res = self.get_data.get_project(self.user_id, self.token)
             self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
             if res.json()["result"] == "fail":
                 self.assertEqual(
@@ -934,7 +956,7 @@ class TestUser(unittest.TestCase,User):
                     "返回的errno不正确")
             else:
                 self.assertEqual(self.run_method.get_result(res),
-                    "success", res.json())
+                                 "success", res.json())
 
     def test13_01_user_dynamicList_default(self):
         """case13-01 : 用户动态列表(带翻页);
@@ -942,7 +964,7 @@ class TestUser(unittest.TestCase,User):
         api = "/api/v1/user/dynamiclist/{}".format(self.user_id)
         data = {"user_id": self.user_id,
                 "token": self.token}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_dynamics where user_id = '{}' ORDER BY created_at DESC;'''.format(
             self.user_id)
@@ -964,7 +986,7 @@ class TestUser(unittest.TestCase,User):
                 "token": self.token,
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_dynamics where user_id = '{}' ORDER BY created_at DESC;'''.format(
             self.user_id)
@@ -975,7 +997,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.assertEqual(
+            res_dict["data"]["current_page"],
+            data["p"],
+            "返回的页数不正确")
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], dynamic_num)
 
@@ -985,7 +1010,7 @@ class TestUser(unittest.TestCase,User):
         api = "/api/v1/user/mymessage"
         data = {"user_id": self.user_id,
                 "token": self.token}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_message where user_id = '{}';'''.format(
             self.user_id)
@@ -1026,7 +1051,7 @@ class TestUser(unittest.TestCase,User):
         api = "/api/v1/user/myfollow"
         data = {"user_id": self.user_id,
                 "token": self.token}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_attention where user_id = '{}';'''.format(
             self.user_id)
@@ -1048,7 +1073,7 @@ class TestUser(unittest.TestCase,User):
                 "token": self.token,
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_attention where user_id = '{}';'''.format(
             self.user_id)
@@ -1059,7 +1084,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.assertEqual(
+            res_dict["data"]["current_page"],
+            data["p"],
+            "返回的页数不正确")
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], follow_num)
 
@@ -1084,7 +1112,7 @@ class TestUser(unittest.TestCase,User):
         api = "/api/v1/user/projectlist/{}".format(self.user_id)
         data = {"user_id": self.user_id,
                 "token": self.token}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_project where user_id = '{}';'''.format(
             self.user_id)
@@ -1106,7 +1134,7 @@ class TestUser(unittest.TestCase,User):
                 "token": self.token,
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_project where user_id = '{}';'''.format(
             self.user_id)
@@ -1117,7 +1145,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.assertEqual(
+            res_dict["data"]["current_page"],
+            data["p"],
+            "返回的页数不正确")
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], dynamic_num)
 
@@ -1173,7 +1204,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": "wait"}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_ask where ask_status = 0 and answer_user_id = '{}';'''.format(
             self.user_id)
@@ -1196,7 +1227,7 @@ class TestUser(unittest.TestCase,User):
                 "t": "wait",
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_ask where ask_status = 0 and answer_user_id = '{}';'''.format(
             self.user_id)
@@ -1207,7 +1238,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.assertEqual(
+            res_dict["data"]["current_page"],
+            data["p"],
+            "返回的页数不正确")
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], wait_num)
 
@@ -1236,7 +1270,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": "done"}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_answer where user_id = '{}';'''.format(
             self.user_id)
@@ -1259,7 +1293,7 @@ class TestUser(unittest.TestCase,User):
                 "t": "done",
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_answer where user_id = '{}';'''.format(
             self.user_id)
@@ -1270,7 +1304,10 @@ class TestUser(unittest.TestCase,User):
         self.assertEqual(
             self.run_method.get_result(res),
             "success", res_dict)
-        self.assertEqual(res_dict["data"]["current_page"], data["p"], "返回的页数不正确")
+        self.assertEqual(
+            res_dict["data"]["current_page"],
+            data["p"],
+            "返回的页数不正确")
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], done_num)
 
@@ -1297,9 +1334,9 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": "ask"}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
-        sql = '''select id from zyt_user_ask 
+        sql = '''select id from zyt_user_ask
                   where user_id = '{}' and ask_status in (0,1,2,5);'''.format(self.user_id)
         ask_num = self.opera_db.get_effect_row(sql)
 
@@ -1319,9 +1356,9 @@ class TestUser(unittest.TestCase,User):
                 "t": "ask",
                 "l": 15,
                 "p": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
-        sql = '''select id from zyt_user_ask 
+        sql = '''select id from zyt_user_ask
                   where user_id = '{}' and ask_status in (0,1,2,5);'''.format(self.user_id)
         ask_num = self.opera_db.get_effect_row(
             sql) - data["l"] * (data["p"] - 1)
@@ -1356,7 +1393,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": "buy"}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select ask_id from zyt_user_buy_ask where user_id = '{}';'''.format(
             self.user_id)
@@ -1376,7 +1413,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": "close"}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select id from zyt_user_ask where user_id = '{}' and ask_status in (3,4);'''.format(
             self.user_id)
@@ -1396,7 +1433,7 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": 1}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
         sql = '''select classes_id from zyt_user_classes where user_id = '{}' and status = 1;'''.format(
             self.user_id)
@@ -1416,9 +1453,9 @@ class TestUser(unittest.TestCase,User):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "t": 2}
-        res = self.run_method.get(api,data)
+        res = self.run_method.get(api, data)
         res_dict = res.json()
-        sql = '''select classes_id from zyt_user_classes 
+        sql = '''select classes_id from zyt_user_classes
                   where user_id = '{}' and status = 2;'''.format(self.user_id)
         collect_num = self.opera_db.get_effect_row(sql)
 
@@ -1471,9 +1508,8 @@ class TestUser(unittest.TestCase,User):
         """case25-03 : 对专家问答进行申诉;
             问题当前状态不可申诉 """
         api = "/api/v1/user/myquesionappeal"
-        self.get_data.get_ask(self.user_id,self.token,self.eid)
+        qid = self.get_data.get_ask(self.user_id, self.token, self.eid)
         time.sleep(7)
-        qid = self.opera_json.get_data("get_ask")
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "qid": qid,
@@ -1488,12 +1524,14 @@ class TestUser(unittest.TestCase,User):
             self.run_method.get_errno(res),
             "-50025",
             "返回的errno不正确")
+        # 返回qid至json文件
+        self.opera_json.check_json_value("test25_03_myQuestionAppeal_errorStatus", qid)
 
     def test25_04_myQuestionAppeal_noContent(self):
         """case25-04 : 对专家问答进行申诉;
             申诉内容为空 """
         api = "/api/v1/user/myquesionappeal"
-        qid = self.opera_json.get_data("get_ask")
+        qid = self.opera_json.get_data("test25_03_myQuestionAppeal_errorStatus")
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "qid": qid,
@@ -1513,8 +1551,8 @@ class TestUser(unittest.TestCase,User):
         """case25-05 : 对专家问答进行申诉;
             申诉成功 """
         api = "/api/v1/user/myquesionappeal"
-        self.get_data.get_answer(self.eid,self.etoken)
-        qid = self.opera_json.get_data("get_ask")
+        qid = self.opera_json.get_data("test25_03_myQuestionAppeal_errorStatus")
+        self.get_data.get_answer(self.eid, self.etoken, qid)
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "qid": qid,
@@ -1530,7 +1568,7 @@ class TestUser(unittest.TestCase,User):
         """case25-06 : 对专家问答进行申诉;
             该问题正在申诉 """
         api = "/api/v1/user/myquesionappeal"
-        qid = self.opera_json.get_data("get_ask")
+        qid = self.opera_json.get_data("test25_03_myQuestionAppeal_errorStatus")
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "qid": qid,
@@ -1549,19 +1587,22 @@ class TestUser(unittest.TestCase,User):
     def test25_07_myQuestionAppeal_isending(self):
         """case25-06 : 对专家问答进行申诉;
             申诉问题正在退款中 """
-        # api = "/api/v1/user/myquesionappeal"
-        # qid = self.opera_json.get_data("get_ask")
-        # data = {"user_id": self.user_id,
-        #         "token": self.token,
-        #         "qid": qid,
-        #         "appeal_content": User.appeal_content}
-        # res = self.run_method.post(api, data)
-        #
-        # self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        # self.assertEqual(
-        #     self.run_method.get_result(res),
-        #     "fail", res.json())
-        # self.assertEqual(
-        #     self.run_method.get_errno(res),
-        #     "-50024",
-        #     "返回的errno不正确")
+        api = "/api/v1/user/myquesionappeal"
+        qid = self.opera_json.get_data("test25_03_myQuestionAppeal_errorStatus")
+        data = {"user_id": self.user_id,
+                "token": self.token,
+                "qid": qid,
+                "appeal_content": User.appeal_content}
+        sql = '''update zyt_user_ask set ask_status = 6 where id ={};'''.format(
+            qid)
+        self.opera_db.update_data(sql)
+        res = self.run_method.post(api, data)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "fail", res.json())
+        self.assertEqual(
+            self.run_method.get_errno(res),
+            "-40025",
+            "返回的errno不正确")

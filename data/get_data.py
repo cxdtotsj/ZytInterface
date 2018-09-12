@@ -48,7 +48,14 @@ class SQLData:
         return value_list
 
     # 筑英台下单操作，并返回order_id
-    def zyt_pay_order(self, user_id, token, good_id, good_type, amount, returnurl):
+    def zyt_pay_order(
+            self,
+            user_id,
+            token,
+            good_id,
+            good_type,
+            amount,
+            returnurl):
         '''
         :param user_id:
         :param token:
@@ -69,37 +76,40 @@ class SQLData:
                 "amount": amount,
                 "returnurl": return_url}
         self.run_method.post(api, data)
-        sql = '''select order_id from zyt_order where user_id = '{}' and good_id = {} and good_type = {}'''.format(user_id, good_id,good_type)
+        sql = '''select order_id from zyt_order where user_id = '{}' and good_id = {} and good_type = {}'''.format(
+            user_id, good_id, good_type)
         order_id = self.opera_db.get_fetchone(sql)["order_id"]
         return order_id
 
     # 插入一个线上课程
-    def insert_course(self,classes_type):
+    def insert_course(self, classes_type):
         num = random.randint(1, 100)
-        class_title = "这是课程类型{}--名称{}".format(classes_type,num)
+        class_title = "这是课程类型{}--名称{}".format(classes_type, num)
         classes_img = "/1536548798927572876?imageView2/2/w/100/h/100/q/100"
         classes_description = "这是课程--介绍{}".format(num)
         professor = "f350756baf4211e8b6e30017fa004b58"
         created_time = int(time.time())
         sql = '''insert into zyt_classes (classes_type,classes_title,classes_img,is_professor,professor,
                     professor_position,professor_intro,classes_description,classes_cate_id,classes_organizers,
-                      classes_address,classes_status,created_time,update_time,created_user) value 
-                      ({},"{}","{}",1,"{}","","","{}",1,"","",1,{},{},"xdchen")'''.format(classes_type,class_title,classes_img,professor,classes_description,created_time,created_time)
+                      classes_address,classes_status,created_time,update_time,created_user) value
+                      ({},"{}","{}",1,"{}","","","{}",1,"","",1,{},{},"xdchen")'''.format(
+            classes_type, class_title, classes_img, professor, classes_description, created_time, created_time)
         course_id = self.opera_db.insert_data(sql)
         return course_id
 
     # 插入线上课时
-    def insert_course_hour(self,classes_id):
+    def insert_course_hour(self, classes_id):
         num = random.randint(1, 100)
         classes_hour_name = "这是课时名称{}".format(num)
-        sql = '''insert into zyt_classes_hour (classes_id,classes_hour_name,classes_url) value ({},"{}","")'''.format(classes_id,classes_hour_name)
+        sql = '''insert into zyt_classes_hour (classes_id,classes_hour_name,classes_url) value ({},"{}","")'''.format(
+            classes_id, classes_hour_name)
         hour_id = self.opera_db.insert_data(sql)
         return hour_id
 
     # 新增一个问题，并购买
-    def get_ask(self,user_id,token,e_id):
+    def get_ask(self, user_id, token, e_id):
         api = "/api/v1/qa/qsubmit"
-        random_mun = random.randint(1,100)
+        random_mun = random.randint(1, 100)
         qa_headers = {"content-type": "application/json"}
         data = {"user_id": user_id,
                 "token": token,
@@ -107,17 +117,16 @@ class SQLData:
                 "title": "固定问题题目 -- %s" % random_mun,
                 "description": "固定问题描述 -- %s" % random_mun,
                 "img": ["/1536116758846885506?imageView2/2/w/212/h/136/q/100"]}
-        qid = self.run_method.post(api, data, headers=qa_headers).json()["data"]["last_id"]
-        # 返回问题的id至json文件
-        self.opera_json.check_json_value("get_ask", qid)
+        qid = self.run_method.post(api, data, headers=qa_headers).json()[
+            "data"]["last_id"]
         # 购买问题
         self.zyt_pay_order(
             user_id, token, qid, 2, 0, "#/expert/payment")
         return qid
 
-    def get_answer(self,e_id,e_token):
+    # 专家回答一个问题
+    def get_answer(self, e_id, e_token, qid):
         api = "/api/v1/qa/asubmit"
-        qid = self.opera_json.get_data("get_ask")
         answer_content = "这是问题答案 -- %s" % (
             datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
         data = {"user_id": e_id,
@@ -127,7 +136,7 @@ class SQLData:
         self.run_method.post(api, data)
 
     # 新增作品项目
-    def get_project(self,user_id,token):
+    def get_project(self, user_id, token):
         # 作品 /api/v1/user/saveproject
         time_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         p_name = "作品名称 %s" % time_now
