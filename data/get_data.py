@@ -1,9 +1,9 @@
 from util.operation_db import OperationDB
 from util.operation_json import OperetionJson
 from base.baseMethod import BaseMethod
-from base.public_param import PublicParam
 from base.getURL import API
 import random
+import datetime
 import time
 
 
@@ -13,7 +13,6 @@ class SQLData:
         self.opera_db = OperationDB()
         self.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         self.run_method = BaseMethod()
-        self.pub_param = PublicParam()
         self.get_url = API()
 
     # 自动插入一条 无需报名的活动，并返回出 id
@@ -98,17 +97,13 @@ class SQLData:
         return hour_id
 
     # 新增一个问题，并购买
-    def get_ask(self,is_buy=None):
+    def get_ask(self,user_id,token,e_id):
         api = "/api/v1/qa/qsubmit"
         random_mun = random.randint(1,100)
-        user_id = self.pub_param.user_id
-        token = self.pub_param.token
-        e_id = self.pub_param.get_expert_info()[1]
-        e_token = self.pub_param.get_expert_info()[0]
         qa_headers = {"content-type": "application/json"}
-        data = {"user_id": e_id,
-                "token": e_token,
-                "eid": user_id,
+        data = {"user_id": user_id,
+                "token": token,
+                "eid": e_id,
                 "title": "固定问题题目 -- %s" % random_mun,
                 "description": "固定问题描述 -- %s" % random_mun,
                 "img": ["/1536116758846885506?imageView2/2/w/212/h/136/q/100"]}
@@ -116,12 +111,38 @@ class SQLData:
         # 返回问题的id至json文件
         self.opera_json.check_json_value("get_ask", qid)
         # 购买问题
-        if is_buy is not None:
-            self.zyt_pay_order(
-                e_id, e_token, qid, 2, 0, "#/expert/payment")
+        self.zyt_pay_order(
+            user_id, token, qid, 2, 0, "#/expert/payment")
         return qid
+
+    def get_answer(self,e_id,e_token):
+        api = "/api/v1/qa/asubmit"
+        qid = self.opera_json.get_data("get_ask")
+        answer_content = "这是问题答案 -- %s" % (
+            datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+        data = {"user_id": e_id,
+                "token": e_token,
+                "qid": qid,
+                "answer_content": answer_content}
+        self.run_method.post(api, data)
+
+    # 新增作品项目
+    def get_project(self,user_id,token):
+        # 作品 /api/v1/user/saveproject
+        time_now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        p_name = "作品名称 %s" % time_now
+        p_desc = "作品简介 %s" % time_now
+        p_img = "/1535965522439599110?imageView2/2/w/212/h/136/q/100"
+        api = "/api/v1/user/saveproject"
+        data = {
+            "user_id": user_id,
+            "token": token,
+            "p_name": p_name,
+            "p_desc": p_desc,
+            "p_img": p_img}
+        res = self.run_method.post(api, data)
+        return res
 
 
 if __name__ == "__main__":
     get_data = SQLData()
-    get_data.get_ask(1)

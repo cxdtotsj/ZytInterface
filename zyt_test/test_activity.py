@@ -1,6 +1,7 @@
 '''
-2018-9-7
+
 活动类接口
+
 '''
 
 from base.baseMethod import BaseMethod
@@ -215,72 +216,6 @@ class TestActivityBSignUp(unittest.TestCase):
             cls.event_id, cls.no_event_id)
         cls.db.update_data(delete_event_sql)
         cls.db.close_db()
-
-    def test01_no_user(self):
-        '''case01 : 缺少user_id参数'''
-
-        data = {"token": self.token,
-                "id": self.event_id}
-        res = self.run_method.post(self.api, data)
-
-        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(
-            self.run_method.get_result(res),
-            "fail", res.json())
-        self.assertEqual(
-            self.run_method.get_errno(res),
-            "-10001",
-            "返回的errno不正确")
-
-    def test02_no_token(self):
-        '''case02 : 缺少token参数'''
-
-        data = {"user_id": self.user_id,
-                "id": self.event_id}
-        res = self.run_method.post(self.api, data)
-
-        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(
-            self.run_method.get_result(res),
-            "fail", res.json())
-        self.assertEqual(
-            self.run_method.get_errno(res),
-            "-10001",
-            "返回的errno不正确")
-
-    def test03_error_user(self):
-        '''case03 : 错误的user_id参数'''
-
-        data = {"user_id": "{}1".format(self.user_id),
-                "token": self.token,
-                "id": self.event_id}
-        res = self.run_method.post(self.api, data)
-
-        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(
-            self.run_method.get_result(res),
-            "fail", res.json())
-        self.assertEqual(
-            self.run_method.get_errno(res),
-            "-10002",
-            "返回的errno不正确")
-
-    def test04_error_token(self):
-        '''case04 : 错误的token参数'''
-
-        data = {"user_id": self.user_id,
-                "token": "{}1".format(self.token),
-                "id": self.event_id}
-        res = self.run_method.post(self.api, data)
-
-        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(
-            self.run_method.get_result(res),
-            "fail", res.json())
-        self.assertEqual(
-            self.run_method.get_errno(res),
-            "-10002",
-            "返回的errno不正确")
 
     def test05_no_eventIdKey(self):
         '''case05 : 缺少活动id'''

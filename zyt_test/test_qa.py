@@ -13,10 +13,10 @@ from data.get_data import SQLData
 from base.getURL import API
 import time
 import unittest
-from data.qa_api_data import QaApiData as qaData
+from data.api_data import QaApiData as QAData
 
 
-class TestQA(unittest.TestCase, qaData):
+class TestQA(unittest.TestCase, QAData):
 
     @classmethod
     def setUpClass(cls):
@@ -39,10 +39,10 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": "",
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -60,10 +60,10 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": "@#￥%……",
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -81,9 +81,9 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -101,9 +101,9 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "title": qaData.qa_title,
-                "img": qaData.qa_img_one}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "title": QAData.qa_title,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -121,13 +121,13 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user set is_open_ask = 0 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -145,13 +145,13 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_four}
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_four}
         sql = '''update zyt_user set is_open_ask = 1 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -169,13 +169,13 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user set professor_status = 0 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -193,13 +193,13 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.user_id,
                 "token": self.token,
                 "eid": self.e_id,
-                "title": qaData.qa_title,
-                "description": qaData.qa_desc,
-                "img": qaData.qa_img_one}
+                "title": QAData.qa_title,
+                "description": QAData.qa_desc,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user set professor_status = 1 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
         res_dict = res.json()
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -217,8 +217,8 @@ class TestQA(unittest.TestCase, qaData):
         api = "/api/v1/qa/asubmit"
         data = {"user_id": self.e_id,
                 "token": self.e_token,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
         res = self.run_method.post(api, data)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -237,8 +237,8 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": "@#$%",
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
         res = self.run_method.post(api, data)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -262,7 +262,7 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "img": qaData.qa_img_one}
+                "img": QAData.qa_img_one}
         res = self.run_method.post(api, data)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
@@ -282,9 +282,9 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_four}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_four}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -304,12 +304,12 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user set is_open_ask = 0 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -329,12 +329,12 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user set is_open_ask = 1 where user_id = '{}';'''.format(
             self.e_id)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -351,9 +351,9 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -373,12 +373,12 @@ class TestQA(unittest.TestCase, qaData):
         data = {"user_id": self.e_id,
                 "token": self.e_token,
                 "qid": qid,
-                "answer_content": qaData.answer_content,
-                "img": qaData.qa_img_one}
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
         sql = '''update zyt_user_ask set ask_status = 1 where id = {};'''.format(
             qid)
         self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=qaData.qa_headers)
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
 
         self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
         self.assertEqual(
@@ -412,7 +412,7 @@ class TestQA(unittest.TestCase, qaData):
             不传数量和页面参数，默认页面为 1，数量为 10 """
         api = "/api/v1/qa/list"
         data = {"user_id": self.user_id,
-                "token": self.token, }
+                "token": self.token}
         res = self.run_method.get(api,data)
         res_dict = res.json()
         sql = '''select id from zyt_user_ask where ask_status in (1,5) ORDER by created_at DESC'''

@@ -46,10 +46,16 @@ class PublicParam:
         else:
             print("服务器登陆失败")
 
+    # 获取用户id
+    def get_id(self):
+        sql = '''select id from zyt_user where user_id = '{}';'''.format(self.user_id)
+        id = self.opera_db.get_fetchone(sql)["id"]
+        return id
+
 
 
 if __name__ == "__main__":
     import time
     basedata = PublicParam()
-    eid = basedata.get_expert_info()[1]
+    eid = basedata.get_id()
     print(eid)
