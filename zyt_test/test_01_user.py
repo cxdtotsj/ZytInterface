@@ -1,5 +1,4 @@
 '''
-2018-9-3
 用户类接口
 用户账号 ： 18321829313
 专家账号： 18317026527
@@ -48,7 +47,7 @@ class TestUser(unittest.TestCase, User):
             用户密码错误  """
         api = "/api/v1/user/login"
         data = {"mobile": User.user_phone,
-                "password": "Password01!"}
+                "password": "Password10!"}
         res = self.run_method.post(api, data)
         res_dict = res.json()
 
@@ -60,7 +59,7 @@ class TestUser(unittest.TestCase, User):
             用户账号、密码正确  """
         api = "/api/v1/user/login"
         data = {"mobile": User.user_phone,
-                "password": "Password02!"}
+                "password": "Password01!"}
         res = self.run_method.post(api, data)
         res_dict = res.json()
 
@@ -1585,7 +1584,7 @@ class TestUser(unittest.TestCase, User):
             "返回的errno不正确")
 
     def test25_07_myQuestionAppeal_isending(self):
-        """case25-06 : 对专家问答进行申诉;
+        """case25-07 : 对专家问答进行申诉;
             申诉问题正在退款中 """
         api = "/api/v1/user/myquesionappeal"
         qid = self.opera_json.get_data("test25_03_myQuestionAppeal_errorStatus")

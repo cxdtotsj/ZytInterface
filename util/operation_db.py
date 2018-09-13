@@ -1,7 +1,6 @@
 
 import pymysql
 import base.setting
-import time
 
 
 class OperationDB:

@@ -11,14 +11,14 @@ import datetime
 import HTMLTestRunner
 import unittest
 from util.send_email import SendEmail
-from zyt_test.test_course import TestCourse
-from zyt_test.test_activity import TestActivitySignUp,TestActivityView
+from zyt_test.test_04_course import TestCourse
+from zyt_test.test_02_activity import TestActivityAView,TestActivityBSignUp
 
 
 '''添加用例集'''
 testCourse = unittest.TestLoader().loadTestsFromTestCase(TestCourse)
-testActivityView = unittest.TestLoader().loadTestsFromTestCase(TestActivityView)
-testActivitySignUp = unittest.TestLoader().loadTestsFromTestCase(TestActivitySignUp)
+testActivityView = unittest.TestLoader().loadTestsFromTestCase(TestActivityAView)
+testActivitySignUp = unittest.TestLoader().loadTestsFromTestCase(TestActivityBSignUp)
 
 suite = unittest.TestSuite([testCourse ,testActivityView,testActivitySignUp])
 

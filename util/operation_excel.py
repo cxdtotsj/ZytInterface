@@ -1,6 +1,5 @@
 import xlrd
 from xlutils.copy import copy
-import xlwt
 
 
 class OperationExcel:

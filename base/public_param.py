@@ -17,7 +17,7 @@ class PublicParam:
     # 获取测试用户的 user_id，token
     def get_token(self):
         api = "/api/v1/user/login"
-        data = {"mobile": 18321829313, "password": "Password02!"}
+        data = {"mobile": 18321829313, "password": "Password01!"}
         res = self.run_method.post(api, data)
         if res.status_code == 200:
             res_dict = res.json()
@@ -51,7 +51,6 @@ class PublicParam:
         sql = '''select id from zyt_user where user_id = '{}';'''.format(self.user_id)
         id = self.opera_db.get_fetchone(sql)["id"]
         return id
-
 
 
 if __name__ == "__main__":

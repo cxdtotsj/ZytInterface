@@ -1,7 +1,6 @@
 '''
-2018-9-11
 问答类接口
-继承qa_api_data.py
+继承api_data.py
 '''
 
 from base.baseMethod import BaseMethod
@@ -10,7 +9,6 @@ from util.assert_judgment import AssertJudgment
 from base.public_param import PublicParam
 from util.operation_json import OperetionJson
 from data.get_data import SQLData
-from base.getURL import API
 import time
 import unittest
 from data.api_data import QaApiData as QAData
@@ -27,7 +25,6 @@ class TestQA(unittest.TestCase, QAData):
         cls.pub_param = PublicParam()
         cls.token = cls.pub_param.token
         cls.user_id = cls.pub_param.user_id
-        cls.get_url = API()
         cls.e_id = cls.pub_param.get_expert_info()[1]
         cls.e_token = cls.pub_param.get_expert_info()[0]
         cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
@@ -211,8 +208,30 @@ class TestQA(unittest.TestCase, QAData):
         self.opera_json.check_json_value(
             "test_01_08_qa_submit_success", res_dict["data"]["last_id"])
 
-    def test02_01_qa_aSubmit_nullId(self):
+    def test02_01_qa_aSubmit_errorStatus(self):
         """case02-01 : 向专家提问 ;
+           非待回答状态 """
+        api = "/api/v1/qa/asubmit"
+        qid = self.opera_json.get_data("test_01_08_qa_submit_success")
+
+        data = {"user_id": self.e_id,
+                "token": self.e_token,
+                "qid": qid,
+                "answer_content": QAData.answer_content,
+                "img": QAData.qa_img_one}
+        res = self.run_method.post(api, data, headers=QAData.qa_headers)
+
+        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
+        self.assertEqual(
+            self.run_method.get_result(res),
+            "fail", res.json())
+        self.assertEqual(
+            self.run_method.get_errno(res),
+            "-40011",
+            "返回的errno不正确")
+
+    def test02_02_qa_aSubmit_noId(self):
+        """case02-02 : 向专家提问 ;
            问题 id 为空 """
         api = "/api/v1/qa/asubmit"
         data = {"user_id": self.e_id,
@@ -230,8 +249,8 @@ class TestQA(unittest.TestCase, QAData):
             "-40009",
             "返回的errno不正确")
 
-    def test02_02_qa_aSubmit_noId(self):
-        """case02-02 : 向专家提问 ;
+    def test02_03_qa_aSubmit_errorId(self):
+        """case02-03 : 向专家提问 ;
            问题 id 不存在 """
         api = "/api/v1/qa/asubmit"
         data = {"user_id": self.e_id,
@@ -250,8 +269,8 @@ class TestQA(unittest.TestCase, QAData):
             "-40010",
             "返回的errno不正确")
 
-    def test02_03_qa_aSubmit_noContent(self):
-        """case02-03 : 向专家提问 ;
+    def test02_04_qa_aSubmit_noContent(self):
+        """case02-04 : 向专家提问 ;
            回答内容为空 """
         api = "/api/v1/qa/asubmit"
         qid = self.opera_json.get_data("test_01_08_qa_submit_success")
@@ -274,8 +293,8 @@ class TestQA(unittest.TestCase, QAData):
             "-40012",
             "返回的errno不正确")
 
-    def test02_04_qa_aSubmit_imgNum(self):
-        """case02-04 : 向专家提问 ;
+    def test02_05_qa_aSubmit_imgNum(self):
+        """case02-05 : 向专家提问 ;
            回答图片超过 3 张 """
         api = "/api/v1/qa/asubmit"
         qid = self.opera_json.get_data("test_01_08_qa_submit_success")
@@ -295,8 +314,8 @@ class TestQA(unittest.TestCase, QAData):
             "-40013",
             "返回的errno不正确")
 
-    def test02_05_qa_aSubmit_noAnswer(self):
-        """case02-05 : 向专家提问 ;
+    def test02_06_qa_aSubmit_noAnswer(self):
+        """case02-06 : 向专家提问 ;
            专家回答已关闭 """
         api = "/api/v1/qa/asubmit"
         qid = self.opera_json.get_data("test_01_08_qa_submit_success")
@@ -320,8 +339,8 @@ class TestQA(unittest.TestCase, QAData):
             "-40016",
             "返回的errno不正确")
 
-    def test02_06_qa_aSubmit_success(self):
-        """case02-06 : 向专家提问 ;
+    def test02_07_qa_aSubmit_success(self):
+        """case02-07 : 向专家提问 ;
            专家回答成功 """
         api = "/api/v1/qa/asubmit"
         qid = self.opera_json.get_data("test_01_08_qa_submit_success")
@@ -342,8 +361,8 @@ class TestQA(unittest.TestCase, QAData):
             "success", res.json())
 
     # 再次作答的错误码应为 -40014
-    def test02_07_qa_aSubmit_answerAgain(self):
-        """case02-07 : 向专家提问 ;
+    def test02_08_qa_aSubmit_answerAgain(self):
+        """case02-08 : 向专家提问 ;
            专家再次回答 """
         api = "/api/v1/qa/asubmit"
         qid = self.opera_json.get_data("test_01_08_qa_submit_success")
@@ -361,32 +380,7 @@ class TestQA(unittest.TestCase, QAData):
             "fail", res.json())
         self.assertEqual(
             self.run_method.get_errno(res),
-            "-40011",
-            "返回的errno不正确")
-
-    def test02_08_qa_aSubmit_errorStatus(self):
-        """case02-08 : 向专家提问 ;
-           非待回答状态 """
-        api = "/api/v1/qa/asubmit"
-        qid = self.opera_json.get_data("test_01_08_qa_submit_success")
-
-        data = {"user_id": self.e_id,
-                "token": self.e_token,
-                "qid": qid,
-                "answer_content": QAData.answer_content,
-                "img": QAData.qa_img_one}
-        sql = '''update zyt_user_ask set ask_status = 1 where id = {};'''.format(
-            qid)
-        self.opera_db.update_data(sql)
-        res = self.run_method.post(api, data, headers=QAData.qa_headers)
-
-        self.assertEqual(res.status_code, 200, "HTTP状态码不为200")
-        self.assertEqual(
-            self.run_method.get_result(res),
-            "fail", res.json())
-        self.assertEqual(
-            self.run_method.get_errno(res),
-            "-40011",
+            "-40014",
             "返回的errno不正确")
 
     def test03_01_qa_detail_isBuy(self):
@@ -448,7 +442,7 @@ class TestQA(unittest.TestCase, QAData):
         self.opera_assert.is_equal_value_len(
             len(res_dict["data"]["data"]), data["l"], ask_num)
 
-    def test04_03_search_course_list(self):
+    def test04_03_qa_list_search(self):
         """case04-03 : 问题大厅-问题列表;
             指定 搜索 参数 """
         api = "/api/v1/qa/list"

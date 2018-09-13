@@ -35,12 +35,8 @@ class API:
 
 
 if __name__ == "__main__":
-    from data.get_excelValue import GetExcelValue
-    from util.operation_json import OperetionJson
-    import json
-    get_data = GetExcelValue()
-    get_json = OperetionJson()
-    parameters = "/api/v1/course/recom"
-    apitest = API()
-    url = apitest.http_api_url(parameters)
+    get_url =API()
+    data_dict = {"identity": "18521358916"}
+    proto_method = "./message.proto 10.241.11.4:6443 pb.Message/CodeGen"
+    url = get_url.proto_api_url(data_dict,proto_method)
     print(url)

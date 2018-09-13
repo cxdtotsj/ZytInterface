@@ -2,9 +2,9 @@ from base.getURL import API
 from base.baseMethod import BaseMethod
 from util.operation_json import OperetionJson
 import unittest
-import json
 
-class Test_Message(unittest.TestCase):
+
+class TestMessage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):

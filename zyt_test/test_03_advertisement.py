@@ -1,12 +1,10 @@
 '''
-2018-9-3
 广告类接口
 '''
 
 import time
 from base.baseMethod import BaseMethod
 from util.operation_db import OperationDB
-from base.public_param import PublicParam
 from util.assert_judgment import AssertJudgment
 import unittest
 
@@ -19,9 +17,9 @@ class TestAdvertisement(unittest.TestCase):
         cls.opera_db = OperationDB()
         cls.opera_assert = AssertJudgment()
 
-    def test01_ad_index(self):
-        '''case01-01 : 首页-已启用的全部banner列表
-            不传参数，默认数量为5 '''
+    def test01_01_ads_index(self):
+        """case01-01 : 首页-已启用的全部banner列表
+            不传参数，默认数量为5 """
         api = "/api/v1/ads/index"
         res = self.run_method.get(api)
         res_dict = res.json()

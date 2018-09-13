@@ -3,6 +3,20 @@ import time
 import sys
 import os
 
+env_dist = os.environ
+# print(env_dist)
+#
+# for key in env_dist:
+#     print(key + ':' + env_dist[key])
+
+
+def get_baseurl(key):
+    baseurl = os.environ.get(key)
+    return baseurl
+
+print(get_baseurl("JAVA_HOME"))
+
+
 # a = "这是一条评论 %s" %(datetime.datetime.now())
 # print(a)
 # print(type(a))
@@ -20,15 +34,14 @@ import os
 # print(d)
 
 # 转换时间戳函数1534474495
-def human_time(stamptime):
-    c = time.localtime(stamptime)
-    d = time.strftime("%Y-%m-%d %H:%M:%S", c)
-    print(d)
+# def human_time(stamptime):
+#     c = time.localtime(stamptime)
+#     d = time.strftime("%Y-%m-%d %H:%M:%S", c)
+#     print(d)
+#
+# human_time(1534474495)
 
-human_time(1534474495)
 
-
-print(a)
 
 
 # timeStamp = 1535791757

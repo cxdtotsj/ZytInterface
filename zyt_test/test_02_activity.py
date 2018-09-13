@@ -1,7 +1,6 @@
 '''
-
 活动类接口
-
+class : TestActivityAView、TestActivityBSignUp
 '''
 
 from base.baseMethod import BaseMethod
@@ -32,8 +31,8 @@ class TestActivityAView(unittest.TestCase):
         cls.opera_json.check_json_value("no_event_id",cls.no_event_id)
         cls.api = "/api/v1/activity/signup"
 
-    def test01_01_activityDetail(self):
-        '''case01-01 : 活动详情接口 '''
+    def test01_01_activity_detail(self):
+        """case01-01 : 活动详情接口 """
 
         api = '/api/v1/activity/{}'.format(self.event_id)
         res = self.run_method.get(api)
@@ -56,9 +55,9 @@ class TestActivityAView(unittest.TestCase):
             "接口返回的活动内容不正确")
 
 
-    def test02_01_default_activity_banner(self):
-        '''case02-01 : 活动中心-已启用&置顶的活动列表接口；
-            不传参，接口默认展示数量为3'''
+    def test02_01_activitys_banner_default(self):
+        """case02-01 : 活动中心-已启用&置顶的活动列表接口；
+            不传参，接口默认展示数量为3"""
 
         api = "/api/v1/activitys/banner"
         res = self.run_method.get(api)
@@ -73,9 +72,9 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), 3, activity_banner)
 
-    def test02_02_specified_activity_banner(self):
-        '''case02-02 : 活动中心-已启用&置顶的活动列表接口；
-            传入指定的参数'''
+    def test02_02_activitys_banner_specified(self):
+        """case02-02 : 活动中心-已启用&置顶的活动列表接口；
+            传入指定的参数"""
 
         api = "/api/v1/activitys/banner"
         data = {"l": 6}
@@ -91,9 +90,9 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), data["l"], activity_banner)
 
-    def test03_01_default_activity_recom(self):
-        '''case03-01 : 活动单页-已启用&非置顶的推荐活动列表;
-            不传参，接口默认展示数量为10 '''
+    def test03_01_activitys_recom_default(self):
+        """case03-01 : 活动单页-已启用&非置顶的推荐活动列表;
+            不传参，接口默认展示数量为10 """
 
         api = "/api/v1/activitys/recom"
         res = self.run_method.get(api)
@@ -108,9 +107,9 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), 10, activity_recom)
 
-    def test03_02_specified_activity_recom(self):
-        '''case03-02 : 活动单页-已启用&非置顶的推荐活动列表;
-            传入指定的参数 '''
+    def test03_02_activitys_recom_specified(self):
+        """case03-02 : 活动单页-已启用&非置顶的推荐活动列表;
+            传入指定的参数 """
 
         api = "/api/v1/activitys/recom"
         data = {"l": 20}
@@ -126,9 +125,9 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']), data["l"], activity_recom)
 
-    def test04_01_default_activity_list(self):
-        '''case04-01 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；
-            不传参，接口默认传 第一页，数量为20 '''
+    def test04_01_activitys_list_default(self):
+        """case04-01 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；
+            不传参，接口默认传 第一页，数量为20 """
 
         api = "/api/v1/activitys/list"
         res = self.run_method.get(api)
@@ -144,7 +143,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']["data"]), 20, activity_list)
 
-    def test04_02_specified_activity_list(self):
+    def test04_02_activitys_list_specified(self):
         """case04-02 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；
             传入指定的参数 """
 
@@ -164,7 +163,7 @@ class TestActivityAView(unittest.TestCase):
         self.opera_assert.is_equal_value_len(
             len(res_dict['data']["data"]), data["l"], activity_list)
 
-    def test05_01_activity_new(self):
+    def test05_01_activitys_new_default(self):
         """case05-01 : 活动中心-已启用的最新活动"""
 
         api = "/api/v1/activitys/new"
@@ -203,7 +202,7 @@ class TestActivityBSignUp(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.db = OperationDB()
-        cls.opera_json = OperetionJson()
+        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
         # 获取活动id（通过数据库）
         cls.event_id = cls.opera_json.get_data("event_id")
         cls.no_event_id = cls.opera_json.get_data("no_event_id")
@@ -217,8 +216,8 @@ class TestActivityBSignUp(unittest.TestCase):
         cls.db.update_data(delete_event_sql)
         cls.db.close_db()
 
-    def test05_no_eventIdKey(self):
-        '''case05 : 缺少活动id'''
+    def test06_01_activity_signUp_noId(self):
+        """case06-01 : 缺少活动id """
 
         data = {"user_id": self.user_id,
                 "token": self.token}
@@ -233,8 +232,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "-30001",
             "返回的errno不正确")
 
-    def test06_no_event_idValue(self):
-        '''case06 : 活动id不存在'''
+    def test06_02_activity_signUp_errorId(self):
+        """case06-02 : 活动id不存在"""
 
         data = {"user_id": self.user_id,
                 "token": self.token,
@@ -250,8 +249,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "-30002",
             "返回的errno不正确")
 
-    def test07_sign_event_success(self):
-        '''case07 : 活动报名成功'''
+    def test06_03_activity_signUp_success(self):
+        """case06-03 : 活动报名成功"""
 
         data = {"user_id": self.user_id,
                 "token": self.token,
@@ -268,8 +267,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "success", res_dict)
         self.assertEqual(res_dict["data"]["last_id"], new_id, "返回的已报名活动id不正确")
 
-    def test08_repeat_sign_event(self):
-        '''case08 : 重复报名'''
+    def test06_04_activity_signUp_again(self):
+        """case06-04 : 重复报名"""
 
         data = {"user_id": self.user_id,
                 "token": self.token,
@@ -285,8 +284,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "-30006",
             "返回的errno不正确")
 
-    def test09_event_timeout(self):
-        '''case09 : 活动报名时间已截止'''
+    def test06_05_activity_signUp_outTime(self):
+        """case06-05 : 活动报名时间已截止"""
 
         before_time = int(time.time() - 1000)
         sql = '''update zyt_event set end_time = {} where id = {};'''.format(
@@ -307,8 +306,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "-30008",
             "返回的errno不正确")
 
-    def test10_event_offline(self):
-        '''case10 : 活动已下线'''
+    def test06_06_activity_signUp_offline(self):
+        """case06-06 : 活动已下线"""
 
         sql = '''update zyt_event set event_status = 0 where id = {};'''.format(
             self.event_id)
@@ -328,8 +327,8 @@ class TestActivityBSignUp(unittest.TestCase):
             "-30003",
             "返回的errno不正确")
 
-    def test11_not_sign_event(self):
-        '''case11 : 不需要报名的活动'''
+    def test06_07_activity_signUp_noSign(self):
+        """case06-07 : 不需要报名的活动"""
 
         data = {"user_id": self.user_id,
                 "token": self.token,
@@ -344,20 +343,6 @@ class TestActivityBSignUp(unittest.TestCase):
             self.run_method.get_errno(res),
             "-30004",
             "返回的errno不正确")
-
-    def test12_fail_sign_event(self):
-        '''
-        case12 : 报名活动失败，
-        暂时无法抛出错误code
-        '''
-        pass
-
-    def test13_full_sign_event(self):
-        '''
-        case13 : 该活动已达到报名上限，
-        超过设置的人数后，仍可以点击报名
-        '''
-        pass
 
 
 if __name__ == "__main__":

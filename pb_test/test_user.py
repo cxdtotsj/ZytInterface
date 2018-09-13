@@ -2,10 +2,10 @@ from base.getURL import API
 from base.baseMethod import BaseMethod
 from util.operation_json import OperetionJson
 import unittest
-import json
 import time
 
-class Test_User(unittest.TestCase):
+
+class TestUser(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
