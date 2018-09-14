@@ -6,11 +6,11 @@ import base.setting
 class OperationDB:
 
     def __init__(self):
-        self.host = base.setting.DB_HOST
-        self.port = base.setting.DB_PORT
-        self.user = base.setting.DB_USER
-        self.pwd = base.setting.DB_PASSWORD
-        self.db_name = base.setting.DB_DB
+        self.host = base.setting.db_host
+        self.port = base.setting.db_port
+        self.user = base.setting.db_user
+        self.pwd = base.setting.db_password
+        self.db_name = base.setting.db_db
         self.db = self.get_db()
         self.mycursor = self.get_cursor()
 
@@ -69,9 +69,9 @@ class OperationDB:
         try:
             self.mycursor.execute(sql)
             self.db.commit()
-        except BaseException:
+        except Exception as e:
             self.db.rollback()
-            print("更新数据失败")
+            print("更新数据失败", e)
 
     # 插入数据，并返回自增id
     def insert_data(self, sql):
@@ -80,17 +80,18 @@ class OperationDB:
             self.db.commit()
             last_id = self.mycursor.lastrowid
             return last_id
-        except BaseException:
+        except Exception as e:
             self.db.rollback()
-            print("插入数据失败")
+            print("插入数据失败", e)
 
     # 删除数据
     def delete_data(self, sql):
         try:
             self.mycursor.execute(sql)
             self.db.commit()
-        except BaseException:
+        except Exception as e:
             self.db.rollback()
+            print("删除数据失败", e)
 
     # 关闭数据库连接
     def close_db(self):
@@ -98,13 +99,7 @@ class OperationDB:
 
 
 if __name__ == '__main__':
-    from data.get_data import SQLData
-    import random
-    get_data = SQLData()
     dbdata = OperationDB()
-    class_id = get_data.insert_course(1)
-    print(class_id)
-    hour_id = get_data.insert_course_hour(63)
-    print(hour_id)
-    class_off_id = get_data.insert_course(2)
-    print(class_off_id)
+    sql = '''select id from zyt_classes_hour where classes_id = 32;'''
+    a = dbdata.get_fetchone(sql)
+    print(a)

@@ -10,11 +10,14 @@ env_dist = os.environ
 #     print(key + ':' + env_dist[key])
 
 
-def get_baseurl(key):
-    baseurl = os.environ.get(key)
-    return baseurl
+# def get_baseurl(key):
+#     baseurl = os.environ.get(key)
+#     return baseurl
+#
+# print(get_baseurl("JAVA_HOME"))
+path = os.environ.get("GOPATH")
+print(path)
 
-print(get_baseurl("JAVA_HOME"))
 
 
 # a = "这是一条评论 %s" %(datetime.datetime.now())

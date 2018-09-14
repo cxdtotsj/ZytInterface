@@ -12,10 +12,10 @@ class API:
         return url
 
     def http_api_url(self, url_params=None):
-        format_url = base.setting.http_base_url
-        if not format_url:
+        base_url = base.setting.http_base_url
+        if not base_url:
             raise RuntimeError("no url been set")
-        url = "{0}{1}".format(format_url, url_params)
+        url = "{0}{1}".format(base_url, url_params)
         return url
 
     def get_url(
@@ -36,7 +36,6 @@ class API:
 
 if __name__ == "__main__":
     get_url =API()
-    data_dict = {"identity": "18521358916"}
-    proto_method = "./message.proto 10.241.11.4:6443 pb.Message/CodeGen"
-    url = get_url.proto_api_url(data_dict,proto_method)
+    api = "v1/course/hour"
+    url = get_url.http_api_url(api)
     print(url)
