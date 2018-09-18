@@ -38,27 +38,11 @@ else:
     db_host = "newhero.mysqldb.chinacloudapi.cn"
     db_port = 3306
 
-if "db_db" in os.environ:
-    db_db = os.environ.get("db_db")
-    print(type(db_db))
-else:
-    db_db = "hero"
+db_db = os.environ.get("db_db") or "hero"
 
-if "db_user" in os.environ:
-    db_user = os.environ.get("db_user")
-    print(type(db_user))
-else:
-    db_user = "newhero%herouser"
+db_user = os.environ.get("db_user") or "newhero%herouser"
 
-if "db_password" in os.environ:
-    db_password = os.environ.get("db_password")
-    print(type(db_password))
-else:
-    db_password = "hero123!@#"
-
-
-# dsn
-dsn = "mysql:host=127.0.0.1;port=3306;dbname=admin"
+db_password = os.environ.get("db_password") or "hero123!@#"
 
 
 if __name__ == '__main__':
@@ -67,12 +51,3 @@ if __name__ == '__main__':
     db_port1 = int(db_url.split(":")[1])
     print(type(db_host))
     print(type(db_port))
-
-    db_host2 = "newhero.mysqldb.chinacloudapi.cn"
-    db_port2 = 3306
-    if db_host1 == db_host2:
-        print(True)
-    else:
-        print(False)
-        print(db_host1)
-        print(db_host2)

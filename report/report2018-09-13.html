@@ -1,0 +1,1188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>ZTY Interface Testing</title>
+    <meta name="generator" content="HTMLTestRunner 0.8.2"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    
+<style type="text/css" media="screen">
+body        { font-family: verdana, arial, helvetica, sans-serif; font-size: 80%; }
+table       { font-size: 100%; }
+pre         { }
+
+/* -- heading ---------------------------------------------------------------------- */
+h1 {
+	font-size: 16pt;
+	color: gray;
+}
+.heading {
+    margin-top: 0ex;
+    margin-bottom: 1ex;
+}
+
+.heading .attribute {
+    margin-top: 1ex;
+    margin-bottom: 0;
+}
+
+.heading .description {
+    margin-top: 4ex;
+    margin-bottom: 6ex;
+}
+
+/* -- css div popup ------------------------------------------------------------------------ */
+a.popup_link {
+}
+
+a.popup_link:hover {
+    color: red;
+}
+
+.popup_window {
+    display: none;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    /*border: solid #627173 1px; */
+    padding: 10px;
+    background-color: #E6E6D6;
+    font-family: "Lucida Console", "Courier New", Courier, monospace;
+    text-align: left;
+    font-size: 8pt;
+    width: 500px;
+}
+
+}
+/* -- report ------------------------------------------------------------------------ */
+#show_detail_line {
+    margin-top: 3ex;
+    margin-bottom: 1ex;
+}
+#result_table {
+    width: 80%;
+    border-collapse: collapse;
+    border: 1px solid #777;
+}
+#header_row {
+    font-weight: bold;
+    color: white;
+    background-color: #777;
+}
+#result_table td {
+    border: 1px solid #777;
+    padding: 2px;
+}
+#total_row  { font-weight: bold; }
+.passClass  { background-color: #6c6; }
+.failClass  { background-color: #c60; }
+.errorClass { background-color: #c00; }
+.passCase   { color: #6c6; }
+.failCase   { color: #c60; font-weight: bold; }
+.errorCase  { color: #c00; font-weight: bold; }
+.hiddenRow  { display: none; }
+.testcase   { margin-left: 2em; }
+
+
+/* -- ending ---------------------------------------------------------------------- */
+#ending {
+}
+
+</style>
+
+</head>
+<body>
+<script language="javascript" type="text/javascript"><!--
+output_list = Array();
+
+/* level - 0:Summary; 1:Failed; 2:All */
+function showCase(level) {
+    trs = document.getElementsByTagName("tr");
+    for (var i = 0; i < trs.length; i++) {
+        tr = trs[i];
+        id = tr.id;
+        if (id.substr(0,2) == 'ft') {
+            if (level < 1) {
+                tr.className = 'hiddenRow';
+            }
+            else {
+                tr.className = '';
+            }
+        }
+        if (id.substr(0,2) == 'pt') {
+            if (level > 1) {
+                tr.className = '';
+            }
+            else {
+                tr.className = 'hiddenRow';
+            }
+        }
+    }
+}
+
+
+function showClassDetail(cid, count) {
+    var id_list = Array(count);
+    var toHide = 1;
+    for (var i = 0; i < count; i++) {
+        tid0 = 't' + cid.substr(1) + '.' + (i+1);
+        tid = 'f' + tid0;
+        tr = document.getElementById(tid);
+        if (!tr) {
+            tid = 'p' + tid0;
+            tr = document.getElementById(tid);
+        }
+        id_list[i] = tid;
+        if (tr.className) {
+            toHide = 0;
+        }
+    }
+    for (var i = 0; i < count; i++) {
+        tid = id_list[i];
+        if (toHide) {
+            document.getElementById('div_'+tid).style.display = 'none'
+            document.getElementById(tid).className = 'hiddenRow';
+        }
+        else {
+            document.getElementById(tid).className = '';
+        }
+    }
+}
+
+
+function showTestDetail(div_id){
+    var details_div = document.getElementById(div_id)
+    var displayState = details_div.style.display
+    // alert(displayState)
+    if (displayState != 'block' ) {
+        displayState = 'block'
+        details_div.style.display = 'block'
+    }
+    else {
+        details_div.style.display = 'none'
+    }
+}
+
+
+function html_escape(s) {
+    s = s.replace(/&/g,'&amp;');
+    s = s.replace(/</g,'&lt;');
+    s = s.replace(/>/g,'&gt;');
+    return s;
+}
+
+/* obsoleted by detail in <div>
+function showOutput(id, name) {
+    var w = window.open("", //url
+                    name,
+                    "resizable,scrollbars,status,width=800,height=450");
+    d = w.document;
+    d.write("<pre>");
+    d.write(html_escape(output_list[id]));
+    d.write("\n");
+    d.write("<a href='javascript:window.close()'>close</a>\n");
+    d.write("</pre>\n");
+    d.close();
+}
+*/
+--></script>
+
+<div class='heading'>
+<h1>ZTY Interface Testing</h1>
+<p class='attribute'><strong>Start Time:</strong> 2018-09-13 15:58:01</p>
+<p class='attribute'><strong>Duration:</strong> 0:01:28.809649</p>
+<p class='attribute'><strong>Status:</strong> Pass 163 Failure 1 Error 1</p>
+
+<p class='description'></p>
+</div>
+
+
+
+<p id='show_detail_line'>Show
+<a href='javascript:showCase(0)'>Summary</a>
+<a href='javascript:showCase(1)'>Failed</a>
+<a href='javascript:showCase(2)'>All</a>
+</p>
+<table id='result_table'>
+<colgroup>
+<col align='left' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+<col align='right' />
+</colgroup>
+<tr id='header_row'>
+    <td>Test Group/Test case</td>
+    <td>Count</td>
+    <td>Pass</td>
+    <td>Fail</td>
+    <td>Error</td>
+    <td>View</td>
+</tr>
+
+<tr class='errorClass'>
+    <td>test_01_user.TestUser</td>
+    <td>78</td>
+    <td>76</td>
+    <td>1</td>
+    <td>1</td>
+    <td><a href="javascript:showClassDetail('c1',78)">Detail</a></td>
+</tr>
+
+<tr id='pt1.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_01_user_login_errorMobile: case04-01 : 用户-登录;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='ft1.2' class='none'>
+    <td class='failCase'><div class='testcase'>test04_02_user_login_errorPwd: case04-02 : 用户-登录;</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.2')" >
+        fail</a>
+
+    <div id='div_ft1.2' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.2').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.2: Traceback (most recent call last):
+  File "D:\Testfan\ZytInterface\zyt_test\test_01_user.py", line 55, in test04_02_user_login_errorPwd
+    self.assertEqual(res_dict["code"], 0, "登陆校验失败")
+AssertionError: 1 != 0 : 登陆校验失败
+Traceback (most recent call last):
+  File "D:\Testfan\ZytInterface\zyt_test\test_01_user.py", line 55, in test04_02_user_login_errorPwd
+    self.assertEqual(res_dict["code"], 0, "登陆校验失败")
+AssertionError: 1 != 0 : 登陆校验失败
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='ft1.3' class='none'>
+    <td class='errorCase'><div class='testcase'>test04_03_user_login_success: case04-03 : 用户-登录;</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.3')" >
+        error</a>
+
+    <div id='div_ft1.3' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.3').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.3: Traceback (most recent call last):
+  File "D:\Testfan\ZytInterface\zyt_test\test_01_user.py", line 68, in test04_03_user_login_success
+    res_dict["data"]["user_id"],
+TypeError: list indices must be integers or slices, not str
+Traceback (most recent call last):
+  File "D:\Testfan\ZytInterface\zyt_test\test_01_user.py", line 68, in test04_03_user_login_success
+    res_dict["data"]["user_id"],
+TypeError: list indices must be integers or slices, not str
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
+</tr>
+
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_01_user_likes_noAskId: case05-01 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_02_user_likes_errorAskId: case05-02 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_03_user_likes_Buy: case05-03 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_04_user_likes_again: case05-04 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_05_user_likes_again: case05-05 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_06_user_likes_again: case05-06 : 点赞 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_01_user_feedback_noContent: case06-01 : 用户反馈 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_02_user_feedback_success: case06-02 : 用户反馈 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_01_user_defaultEdit_noData: case07-01 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_02_user_defaultEdit_errorType: case07-02 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_03_user_defaultEdit_noNickName: case07-03 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_04_user_defaultEdit_phone: case07-04 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_06_user_defaultEdit_success: case07-06 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_07_user_defaultEdit_errorEmail: case07-07 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_08_user_defaultEdit_emailSuccess: case07-08 : 个人资料编辑，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_01_user_verifyEdit_noName: case08-01 : 申请专家认证，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_02_user_verifyEdit_noSkill: case08-02 : 申请专家认证，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_03_user_verifyEdit_noAvatar: case08-03 : 申请专家认证，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_04_user_verifyEdit_uploadVer: case08-04 : 申请专家认证，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_05_user_verifyEdit_uploadAgain: case08-05 : 申请专家认证，不是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_06_user_verifyEdit_nameAgain: case08-06 : 申请专家认证，认证中 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.25' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_07_user_verifyEdit_skillAgain: case08-07 : 申请专家认证，认证中 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.26' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_08_user_verifyExpert_nameAgain: case08-08 : 申请专家认证，已是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test08_09_user_verifyEdit_skillAgain: case08-07 : 申请专家认证，已是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test09_01_user_uploadEdit_avatar: case09-01 : 申请专家认证，已是专家 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.29' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_01_user_myOpenQA_noType: case10-01 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.30' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_02_user_myOpenQA_errorPrice: case10-02 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.31' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_03_user_myOpenQA_noExpert: case10-03 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.32' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_04_user_myOpenQA_setPrice: case10-04 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.33' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_05_user_myOpenQA_close: case10-05 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.34' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test10_06_user_myOpenQA_closeAgain: case10-06 : 开启专家咨询，设置价格 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.35' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_01_user_follow_notExpert: case11-01 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.36' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_02_user_follow_nofId: case11-02 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.37' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_03_user_follow_errorFId: case11-03 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.38' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_04_user_follow_success: case11-04 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.39' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_05_user_follow_again: case11-05 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.40' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_06_user_follow_again: case11-06 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.41' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test11_07_user_follow_again: case11-07 : 关注某用户 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.42' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_01_user_saveProject_noP_name: case12-01 : 新增作品 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.43' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_02_user_saveProject_noP_desc: case12-02 : 新增作品 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.44' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_03_user_saveProject_noP_img: case12-03 : 新增作品 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.45' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_04_user_saveProject_success: case12-04 : 新增作品 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.46' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test12_05_user_saveProject_more20: case12-05 : 新增作品 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.47' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test13_01_user_dynamicList_default: case13-01 : 用户动态列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.48' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test13_02_user_dynamicList_specified: case13-02 : 用户动态列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.49' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test14_01_user_myMessage_default: case14-01 : 我的站内消息(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.50' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test14_02_user_myMessage_specified: case14-02 : 用户动态列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.51' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test15_01_user_myFollow_default: case15-01 : 我的关注(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.52' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test15_02_user_myFollow_specified: case15-02 : 我的关注(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.53' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test15_03_user_myFollow_search: case15-03 : 我的关注(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.54' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test16_01_user_projectList_default: case16-01 : 用户项目作品列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.55' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test16_02_user_projectList_specified: case16-02 : 用户项目作品列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.56' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test17_01_user_detail_noUser: case01 : 用户详情</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.57' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test17_02_user_detail_noToken: case01 : 用户详情</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.58' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test17_03_user_detail_success: case01 : 用户详情</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.59' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test18_01_user_myAnswerWait_default: case18-01 : 我的待回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.60' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test18_02_user_myAnswerWait_specified: case18-02 : 我的待回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.61' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test18_03_user_myAnswerWait_search: case18-03 : 我的待回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.62' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test19_01_user_myAnswerDone_default: case19-01 : 我的已回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.63' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test19_02_user_myAnswerDone_specified: case19-02 : 我的已回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.64' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test19_03_user_myAnswerDone_search: case19-03 : 我的已回答(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.65' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test20_01_user_myQuestionAsk_default: case20-01 : 我问的问题(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.66' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test20_02_user_myQuestionAsk_specified: case20-02 : 我问的问题(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.67' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test20_03_user_myQuestionAsk_search: case20-03 : 我问的问题(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.68' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test21_01_user_myQuestionBuy_default: case21-01 : 我购买的问题(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.69' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test22_01_user_myQuestionClose_default: case22-01 : 我关闭的问题(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.70' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test23_01_user_myCourseBuy_default: case23-01 : 我购买的课程(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.71' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test24_01_user_myCourseCollect_default: case24-01 : 我收藏的课程(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.72' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_01_myQuestionAppeal_noQId: case25-01 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.73' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_02_myQuestionAppeal_errorQId: case25-02 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.74' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_03_myQuestionAppeal_errorStatus: case25-03 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.75' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_04_myQuestionAppeal_noContent: case25-04 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.76' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_05_myQuestionAppeal_success: case25-05 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.77' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_06_myQuestionAppeal_isAppealing: case25-06 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt1.78' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test25_07_myQuestionAppeal_isending: case25-06 : 对专家问答进行申诉;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_02_activity.TestActivityAView</td>
+    <td>8</td>
+    <td>8</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c2',8)">Detail</a></td>
+</tr>
+
+<tr id='pt2.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_activity_detail: case01-01 : 活动详情接口</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_01_activitys_banner_default: case02-01 : 活动中心-已启用&置顶的活动列表接口；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_02_activitys_banner_specified: case02-02 : 活动中心-已启用&置顶的活动列表接口；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_01_activitys_recom_default: case03-01 : 活动单页-已启用&非置顶的推荐活动列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_02_activitys_recom_specified: case03-02 : 活动单页-已启用&非置顶的推荐活动列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_01_activitys_list_default: case04-01 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_02_activitys_list_specified: case04-02 : 活动中心-已启用&非置顶的全部活动列表(带翻页)；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt2.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_01_activitys_new_default: case05-01 : 活动中心-已启用的最新活动</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_02_activity.TestActivityBSignUp: 活动报名接口的case</td>
+    <td>7</td>
+    <td>7</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c3',7)">Detail</a></td>
+</tr>
+
+<tr id='pt3.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_01_activity_signUp_noId: case06-01 : 缺少活动id</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_02_activity_signUp_errorId: case06-02 : 活动id不存在</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_03_activity_signUp_success: case06-03 : 活动报名成功</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_04_activity_signUp_again: case06-04 : 重复报名</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_05_activity_signUp_outTime: case06-05 : 活动报名时间已截止</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_06_activity_signUp_offline: case06-06 : 活动已下线</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt3.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_07_activity_signUp_noSign: case06-07 : 不需要报名的活动</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_03_advertisement.TestAdvertisement</td>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c4',1)">Detail</a></td>
+</tr>
+
+<tr id='pt4.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_ads_index: case01-01 : 首页-已启用的全部banner列表</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_04_course.TestCourse: 线上、线下课程类用例</td>
+    <td>28</td>
+    <td>28</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c5',28)">Detail</a></td>
+</tr>
+
+<tr id='pt5.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_course_detail_default: case01-01 : 查询课程详细内容;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_02_course_detail_off: case01-02 : 查询课程详细内容;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_01_course_hourDetail_classesOff: case02-01 : 查询线上课时的详细内容;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_02_course_hourDetail_classesBuy: case02-02 : 查询线上课时的详细内容;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_03_course_hourDetail_noContent: case02-03 : 查询线上课时的详细内容;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_01_course_qrCode_noID: case03-01 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_02_course_qrCode_errorID: case03-02 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_03_course_qrCode_status: case03-03 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_04_course_qrCode_status: case03-04 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_05_course_qrCode_status: case03-05 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_06_course_qrCode_status: case03-06 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_07_course_qrCode_status: case03-07 : 线下课程二维码;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_01_course_saveFavor_add_noID: case04-01 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_02_course_saveFavor_add_errorID: case04-02 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_03_course_saveFavor_add_off: case04-03 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_04_course_saveFavor_add_success: case04-04 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_05_course_saveFavor_add_again: case04-05 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_06_course_saveFavor_cancel_success: case04-06 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_07_course_saveFavor_cancel_again: case04-07 : 收藏课程;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_01_course_commentSubmit_noID: case05-01 : 发表课程评论;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_02_course_commentSubmit_noContent: case05-02 : 发表课程评论;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_03_course_commentSubmit_noBuy: case05-03 : 发表课程评论;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_04_course_commentSubmit_success: case05-04 : 发表课程评论;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_01_course_commentList_default: case06-01 : 课程的所有评论列表(带翻页)；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.25' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_02_course_commentList_specified: case06-02 : 课程的所有评论列表(带翻页)；</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.26' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_01_course_klyk_default: case07-01 : 课程单页-看了又看推荐位;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.27' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test07_02_course_klyk_specified: case07-02 : 课程单页-看了又看推荐位;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt5.28' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test_02_04_course_hourDetail_success: case02-04 : 正常播放视频</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_04_course.TestSearchCourse: 课程查询类用例，不需要登陆</td>
+    <td>13</td>
+    <td>13</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c6',13)">Detail</a></td>
+</tr>
+
+<tr id='pt6.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_course_recom_default: case01-01 : 首页-热门推荐课程列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_02_course_recom_specified: case01-02 : 首页-热门推荐课程列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_01_course_prof: case02-01 : 培训页-课程专业筛选项</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_01_course_list_default: case03-01 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_02_course_list_specified: case03-02 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_03_course_list_search: case03-03 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_04_course_list_online: case03-04 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_05_course_list_offline: case03-05 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_06_course_list_prof: case03-06 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_07_course_list_salesSort: case03-07 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_08_course_list_salesSort: case03-08 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_09_course_list_priceSort: case03-09 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt6.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_10_course_list_priceSort: case03-10 : 培训页-课程可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_05_expert.TestExpert</td>
+    <td>6</td>
+    <td>6</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c7',6)">Detail</a></td>
+</tr>
+
+<tr id='pt7.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_expert_recom_default: case01-01 : 首页-全部热门专家;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt7.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_01_expert_skill: case02-01 : 专家列表页-专业筛选项</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt7.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_01_expert_list_default: case03-01 : 专家列表页-专家可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt7.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_02_expert_list_specified: case03-02 : 专家列表页-专家可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt7.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_03_expert_list_search: case03-03 : 专家列表页-专家可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt7.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_04_expert_list_skill: case03-04 : 专家列表页-专家可筛选列表(带翻页);</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr class='passClass'>
+    <td>test_06_qa.TestQA</td>
+    <td>24</td>
+    <td>24</td>
+    <td>0</td>
+    <td>0</td>
+    <td><a href="javascript:showClassDetail('c8',24)">Detail</a></td>
+</tr>
+
+<tr id='pt8.1' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_01_qa_qSubmit_noEid: case01-01 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_02_qa_qSubmit_noExpert: case01-02 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_03_qa_qSubmit_noTitle: case01-03 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_04_qa_qSubmit_noDesc: case01-04 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.5' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_05_qa_qSubmit_noAnswer: case01-05 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.6' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_06_qa_qSubmit_imgNum: case01-06 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.7' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_07_qa_qSubmit_expertStatus: case01-07 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.8' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test01_08_qa_qSubmit_success: case01-08 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.9' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_01_qa_aSubmit_errorStatus: case02-01 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.10' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_02_qa_aSubmit_noId: case02-02 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.11' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_03_qa_aSubmit_errorId: case02-03 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.12' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_04_qa_aSubmit_noContent: case02-04 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.13' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_05_qa_aSubmit_imgNum: case02-05 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.14' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_06_qa_aSubmit_noAnswer: case02-06 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.15' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_07_qa_aSubmit_success: case02-07 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.16' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test02_08_qa_aSubmit_answerAgain: case02-08 : 向专家提问 ;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.17' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test03_01_qa_detail_isBuy: case03-01 : 某个问题的详情</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.18' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_01_qa_list_default: case04-01 : 问题大厅-问题列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.19' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_02_qa_list_specified: case04-02 : 问题大厅-问题列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.20' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test04_03_qa_list_search: case04-03 : 问题大厅-问题列表;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.21' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_01_qa_expert_default: case05-01 : 专家的过往问答;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.22' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test05_02_qa_expert_specified: case05-02 : 专家的过往问答;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.23' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_01_qa_recom_default: case06-01 : 首页-全部优质问答;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='pt8.24' class='hiddenRow'>
+    <td class='none'><div class='testcase'>test06_02_qa_recom_specified: case06-02 : 首页-全部优质问答;</div></td>
+    <td colspan='5' align='center'>pass</td>
+</tr>
+
+<tr id='total_row'>
+    <td>Total</td>
+    <td>165</td>
+    <td>163</td>
+    <td>1</td>
+    <td>1</td>
+    <td>&nbsp;</td>
+</tr>
+</table>
+
+<div id='ending'>&nbsp;</div>
+
+</body>
+</html>
