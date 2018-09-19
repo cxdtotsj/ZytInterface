@@ -19,7 +19,7 @@ class TestActivityAView(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
         cls.opera_assert = AssertJudgment()
         cls.get_data = SQLData()
         # 需要报名的活动id（后期可通过数据库新增一个活动，并返回至json）
@@ -189,7 +189,7 @@ class TestActivityBSignUp(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
         cls.pub_param = PublicParam()
         cls.token = cls.pub_param.token
         cls.user_id = cls.pub_param.user_id
@@ -202,7 +202,7 @@ class TestActivityBSignUp(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         cls.db = OperationDB()
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
         # 获取活动id（通过数据库）
         cls.event_id = cls.opera_json.get_data("event_id")
         cls.no_event_id = cls.opera_json.get_data("no_event_id")

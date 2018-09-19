@@ -268,7 +268,7 @@ class TestCourse(unittest.TestCase):
     def setUpClass(cls):
         cls.run_method = BaseMethod()
         cls.opera_db = OperationDB()
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
         cls.get_data = SQLData()
         cls.opera_assert = AssertJudgment()
         cls.pub_param = PublicParam()

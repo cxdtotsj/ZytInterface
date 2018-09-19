@@ -11,7 +11,7 @@ class SQLData:
 
     def __init__(self):
         self.opera_db = OperationDB()
-        self.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        self.opera_json = OperetionJson()
         self.run_method = BaseMethod()
         self.get_url = API()
 

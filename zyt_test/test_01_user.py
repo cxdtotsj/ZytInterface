@@ -33,7 +33,7 @@ class TestUser(unittest.TestCase, User):
         cls.user_id = cls.pub_param.user_id
         cls.eid = cls.pub_param.get_expert_info()[1]
         cls.etoken = cls.pub_param.get_expert_info()[0]
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
 
     def test04_01_user_login_errorMobile(self):
         """case04-01 : 用户-登录;

@@ -27,7 +27,7 @@ class TestQA(unittest.TestCase, QAData):
         cls.user_id = cls.pub_param.user_id
         cls.e_id = cls.pub_param.get_expert_info()[1]
         cls.e_token = cls.pub_param.get_expert_info()[0]
-        cls.opera_json = OperetionJson("../dataconfig/zyt_data.json")
+        cls.opera_json = OperetionJson()
 
     def test01_01_qa_qSubmit_noEid(self):
         """case01-01 : 向专家提问 ;

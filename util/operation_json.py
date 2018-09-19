@@ -1,11 +1,15 @@
 import json
+import os
 
 
 class OperetionJson:
 
     def __init__(self, file_path=None):
+        curPath = os.path.abspath(os.path.dirname(__file__))
+        rootPath = os.path.split(curPath)[0]
         if file_path is None:
-            self.file_path = '../dataconfig/test_data.json'
+            # self.file_path = r'D:\Testfan\ZytInterface\dataconfig\zyt_data.json'
+            self.file_path = os.path.join(rootPath,'dataconfig','zyt_data.json')
         else:
             self.file_path = file_path
         self.data = self.read_data()
@@ -33,9 +37,10 @@ class OperetionJson:
         self.write_data(json_data)
 
 
-if __name__ == "__main__":
-    file = '../dataconfig/zyt_data.json'
-    opera_json = OperetionJson(file)
-    opera_json.check_json_value("test001", "testvalue")
-    user_id = opera_json.get_data("test001")
-    print(user_id)
+if __name__ == '__main__':
+    import os
+    curPath = os.path.abspath(os.path.dirname(__file__))
+    rootPath = os.path.split(curPath)[0]
+    json_path = os.path.join(rootPath,'dataconfig','zyt_data.json')
+    print(rootPath)
+    print(json_path)
